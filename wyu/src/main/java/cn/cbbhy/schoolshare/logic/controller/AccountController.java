@@ -41,6 +41,7 @@ public class AccountController {
     @RequestMapping(value = "/login.html", method = RequestMethod.GET)
     public String getLoginPage(Model model) {
         String url = "login";
+        model.addAttribute("jrebel","ss");
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
             url = "redirect:/table/admin.html";
