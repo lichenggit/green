@@ -11,7 +11,6 @@
     <modules>
         <module>share</module>
         <module>mail</module>
-        <module>example</module>
         <module>wyu</module>
     </modules>
     <properties>
@@ -84,6 +83,9 @@
 
         <!-- test -->
         <junit.version>4.12</junit.version>
+
+        <!--jedis-->
+        <jedis.version>2.9.0</jedis.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -383,6 +385,12 @@
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
+            </dependency>
+            <!--Jedis-->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
