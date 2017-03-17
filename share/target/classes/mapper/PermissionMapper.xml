@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.PermissionMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Permission">
+    <id column="PER_ID" jdbcType="VARCHAR" property="perId" />
+    <result column="PER_NAME" jdbcType="VARCHAR" property="perName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PER_ID, PER_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where PER_ID = #{perId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_permission
+    where PER_ID = #{perId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Permission">
+    insert into t_permission (PER_ID, PER_NAME)
+    values (#{perId,jdbcType=VARCHAR}, #{perName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Permission">
+    insert into t_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="perId != null">
+        PER_ID,
+      </if>
+      <if test="perName != null">
+        PER_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="perId != null">
+        #{perId,jdbcType=VARCHAR},
+      </if>
+      <if test="perName != null">
+        #{perName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Permission">
+    update t_permission
+    <set>
+      <if test="perName != null">
+        PER_NAME = #{perName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PER_ID = #{perId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Permission">
+    update t_permission
+    set PER_NAME = #{perName,jdbcType=VARCHAR}
+    where PER_ID = #{perId,jdbcType=VARCHAR}
+  </update>
+  <!--根据角色Id查找权限-->
+  <select id="selectPermissionsByRoleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT t_permission.*
+    FROM t_role_permission JOIN t_permission ON t_role_permission.PER_ID = t_permission.PER_ID
+    WHERE t_role_permission.ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.UserCategoryMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.UserCategory">
+    <id column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId" />
+    <result column="CATEGORY_LEVEL" jdbcType="VARCHAR" property="categoryLevel" />
+    <result column="CATEGORY_CODE" jdbcType="VARCHAR" property="categoryCode" />
+    <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName" />
+    <result column="SUPER_CATEGORY_ID" jdbcType="VARCHAR" property="superCategoryId" />
+    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CATEGORY_ID, CATEGORY_LEVEL, CATEGORY_CODE, CATEGORY_NAME, SUPER_CATEGORY_ID, CREATOR,
+    CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_category
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_user_category
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.UserCategory">
+    insert into t_user_category (CATEGORY_ID, CATEGORY_LEVEL, CATEGORY_CODE,
+    CATEGORY_NAME, SUPER_CATEGORY_ID, CREATOR,
+    CREATE_TIME)
+    values (#{categoryId,jdbcType=VARCHAR}, #{categoryLevel,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR},
+    #{categoryName,jdbcType=VARCHAR}, #{superCategoryId,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.UserCategory">
+    insert into t_user_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        CATEGORY_ID,
+      </if>
+      <if test="categoryLevel != null">
+        CATEGORY_LEVEL,
+      </if>
+      <if test="categoryCode != null">
+        CATEGORY_CODE,
+      </if>
+      <if test="categoryName != null">
+        CATEGORY_NAME,
+      </if>
+      <if test="superCategoryId != null">
+        SUPER_CATEGORY_ID,
+      </if>
+      <if test="creator != null">
+        CREATOR,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLevel != null">
+        #{categoryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="superCategoryId != null">
+        #{superCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.UserCategory">
+    update t_user_category
+    <set>
+      <if test="categoryLevel != null">
+        CATEGORY_LEVEL = #{categoryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        CATEGORY_CODE = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="superCategoryId != null">
+        SUPER_CATEGORY_ID = #{superCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        CREATOR = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.UserCategory">
+    update t_user_category
+    set CATEGORY_LEVEL = #{categoryLevel,jdbcType=VARCHAR},
+    CATEGORY_CODE = #{categoryCode,jdbcType=VARCHAR},
+    CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR},
+    SUPER_CATEGORY_ID = #{superCategoryId,jdbcType=VARCHAR},
+    CREATOR = #{creator,jdbcType=VARCHAR},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </update> <select id="selectSubCategories" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_category
+    where SUPER_CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+    ORDER BY CREATE_TIME DESC
+  </select>
+</mapper>

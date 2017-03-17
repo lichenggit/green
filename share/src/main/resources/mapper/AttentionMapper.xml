@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.AttentionMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Attention">
+        <id column="ATTENTION_ID" jdbcType="VARCHAR" property="attentionId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+        <result column="STATUS" jdbcType="CHAR" property="status"/>
+        <result column="REAMRK" jdbcType="VARCHAR" property="reamrk"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <association property="article" javaType="cn.cbbhy.schoolshare.logic.model.Article">
+            <id column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+            <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+            <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName"/>
+            <result column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+            <result column="ARTICLE_DEGREE" jdbcType="TINYINT" property="articleDegree"/>
+            <result column="PRICE" jdbcType="DOUBLE" property="price"/>
+            <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+            <result column="PICTURE_IDS" jdbcType="VARCHAR" property="pictureIds"/>
+            <result column="STATUS" jdbcType="CHAR" property="status"/>
+            <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+            <result column="CONTACT_MAN" jdbcType="VARCHAR" property="contactMan"/>
+            <result column="CONTACT_WAY" jdbcType="VARCHAR" property="contactWay"/>
+            <result column="ACCESS_ENABLE" jdbcType="CHAR" property="accessEnable"/>
+            <result column="SENDABLE" jdbcType="CHAR" property="sendable"/>
+            <result column="LOANABLE" jdbcType="CHAR" property="loanable"/>
+            <result column="TENANTABLE" jdbcType="CHAR" property="tenantable"/>
+            <result column="MARKRTABLE" jdbcType="CHAR" property="markrtable"/>
+            <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ATTENTION_ID, USER_ID, ARTICLE_ID, STATUS, REAMRK, CREATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attention
+        where ATTENTION_ID = #{attentionId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_attention
+    where ATTENTION_ID = #{attentionId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Attention">
+    insert into t_attention (ATTENTION_ID, USER_ID, ARTICLE_ID, 
+      STATUS, REAMRK, CREATE_TIME
+      )
+    values (#{attentionId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{articleId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{reamrk,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Attention">
+        insert into t_attention
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attentionId != null">
+                ATTENTION_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="articleId != null">
+                ARTICLE_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="reamrk != null">
+                REAMRK,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attentionId != null">
+                #{attentionId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleId != null">
+                #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="reamrk != null">
+                #{reamrk,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Attention">
+        update t_attention
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleId != null">
+                ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="reamrk != null">
+                REAMRK = #{reamrk,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ATTENTION_ID = #{attentionId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Attention">
+    update t_attention
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=CHAR},
+      REAMRK = #{reamrk,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ATTENTION_ID = #{attentionId,jdbcType=VARCHAR}
+  </update>
+
+    <!--条件查询-->
+    <sql id="conditions">
+        <if test="userId != null and userId != ''">
+            AND t1.USER_ID = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="articleId != null and articleId != ''">
+            AND t1.ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status != ''">
+            AND t1.STATUS = #{status,jdbcType=CHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND t1.CREATE_TIME &gt;= #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+    <!--条件查询结果集-->
+    <select id="selectByConditions" parameterType="cn.cbbhy.schoolshare.logic.model.Attention"
+            resultMap="BaseResultMap">
+        SELECT
+        t1.ATTENTION_ID,t1.CREATE_TIME,t2.*,(SELECT CATEGORY_NAME FROM t_category t3 WHERE t3.CATEGORY_ID = t2.CATEGORY_ID) CATEGORY_NAME
+        FROM t_attention t1 JOIN t_article t2 ON t1.ARTICLE_ID=t2.ARTICLE_ID
+        WHERE 1=1
+        <include refid="conditions"/>
+    </select>
+    <!--条件查询数量-->
+    <select id="countByConditions" parameterType="cn.cbbhy.schoolshare.logic.model.Attention"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM t_attention t1
+        WHERE 1=1
+        <include refid="conditions"/>
+    </select>
+
+    <!--取消关注-->
+    <delete id="deleteByUserAndArticle">
+        DELETE FROM t_attention
+        WHERE USER_ID = #{userId,jdbcType=VARCHAR} AND ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

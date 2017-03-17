@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.StudentMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Student">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="MONITOR" jdbcType="VARCHAR" property="monitor"/>
+        <result column="CLASS_GRADE" jdbcType="VARCHAR" property="classGrade"/>
+        <result column="STUDENT_NAME" jdbcType="VARCHAR" property="studentName"/>
+        <result column="STUDENT_ID" jdbcType="VARCHAR" property="studentId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, MONITOR, CLASS_GRADE, STUDENT_NAME, STUDENT_ID
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wyu_student
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_wyu_student
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Student">
+    insert into t_wyu_student (ID, MONITOR, CLASS_GRADE, 
+      STUDENT_NAME, STUDENT_ID)
+    values (#{id,jdbcType=VARCHAR}, #{monitor,jdbcType=VARCHAR}, #{classGrade,jdbcType=VARCHAR}, 
+      #{studentName,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Student">
+        insert into t_wyu_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="monitor != null">
+                MONITOR,
+            </if>
+            <if test="classGrade != null">
+                CLASS_GRADE,
+            </if>
+            <if test="studentName != null">
+                STUDENT_NAME,
+            </if>
+            <if test="studentId != null">
+                STUDENT_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="monitor != null">
+                #{monitor,jdbcType=VARCHAR},
+            </if>
+            <if test="classGrade != null">
+                #{classGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Student">
+        update t_wyu_student
+        <set>
+            <if test="monitor != null">
+                MONITOR = #{monitor,jdbcType=VARCHAR},
+            </if>
+            <if test="classGrade != null">
+                CLASS_GRADE = #{classGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="studentName != null">
+                STUDENT_NAME = #{studentName,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                STUDENT_ID = #{studentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Student">
+    update t_wyu_student
+    set MONITOR = #{monitor,jdbcType=VARCHAR},
+      CLASS_GRADE = #{classGrade,jdbcType=VARCHAR},
+      STUDENT_NAME = #{studentName,jdbcType=VARCHAR},
+      STUDENT_ID = #{studentId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--批量插入-->
+    <insert id="insertStudents">
+        insert into t_wyu_student (ID, MONITOR, CLASS_GRADE,
+        STUDENT_NAME, STUDENT_ID)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.monitor,jdbcType=VARCHAR}, #{item.classGrade,jdbcType=VARCHAR},
+            #{item.studentName,jdbcType=VARCHAR}, #{item.studentId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <!--查找班长上传的学生名单-->
+    <select id="searchStudentsByMonitor" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wyu_student
+        where MONITOR = #{monitor,jdbcType=VARCHAR}
+        ORDER BY STUDENT_ID
+    </select>
+    <!--删除班长上传的学生名单-->
+    <delete id="deleteStudentsByMonitor" parameterType="java.lang.String">
+        delete from t_wyu_student
+        where MONITOR = #{monitor,jdbcType=VARCHAR}
+    </delete>
+    <!--查找姓名和学号对应的学生是否存在-->
+    <select id="countStudentByStudentId" resultType="java.lang.Integer">
+        select COUNT(*)
+        from t_wyu_student
+        where MONITOR = #{monitor,jdbcType=VARCHAR} AND STUDENT_ID = #{studentId,jdbcType=VARCHAR} AND STUDENT_NAME = #{studentName,jdbcType=VARCHAR}
+    </select>
+    <!--查找学生数量-->
+    <select id="countStudentByMonitor" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COUNT(*)
+        from t_wyu_student
+        where MONITOR = #{monitor,jdbcType=VARCHAR}
+    </select>
+</mapper>

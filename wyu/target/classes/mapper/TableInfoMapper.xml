@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.TableInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.TableInfo">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TABLE_NAME_EN" jdbcType="VARCHAR" property="tableNameEn"/>
+        <result column="TABLE_NAME_CN" jdbcType="VARCHAR" property="tableNameCn"/>
+        <result column="CREATOR" jdbcType="VARCHAR" property="creator"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="STATUS" jdbcType="CHAR" property="status"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, TABLE_NAME_EN, TABLE_NAME_CN, CREATOR, REMARK, START_TIME, END_TIME, UPDATE_TIME,
+    STATUS, CREATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wyu_table_info
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_wyu_table_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.TableInfo">
+    insert into t_wyu_table_info (ID, TABLE_NAME_EN, TABLE_NAME_CN,
+    CREATOR, REMARK, START_TIME,
+    END_TIME, UPDATE_TIME, STATUS,
+    CREATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{tableNameEn,jdbcType=VARCHAR}, #{tableNameCn,jdbcType=VARCHAR},
+    #{creator,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+    #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR},
+    #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.TableInfo">
+        insert into t_wyu_table_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="tableNameEn != null">
+                TABLE_NAME_EN,
+            </if>
+            <if test="tableNameCn != null">
+                TABLE_NAME_CN,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="startTime != null">
+                START_TIME,
+            </if>
+            <if test="endTime != null">
+                END_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="tableNameEn != null">
+                #{tableNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="tableNameCn != null">
+                #{tableNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.TableInfo">
+        update t_wyu_table_info
+        <set>
+            <if test="tableNameEn != null">
+                TABLE_NAME_EN = #{tableNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="tableNameCn != null">
+                TABLE_NAME_CN = #{tableNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                END_TIME = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.TableInfo">
+    update t_wyu_table_info
+    set TABLE_NAME_EN = #{tableNameEn,jdbcType=VARCHAR},
+      TABLE_NAME_CN = #{tableNameCn,jdbcType=VARCHAR},
+      CREATOR = #{creator,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=CHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--查找用户所建的表（仅仅是自己创建的）-->
+    <select id="searchTablesByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wyu_table_info
+        where CREATOR = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查找用户所能操作的表（包含自己建的和别人授权的）-->
+    <select id="searchAccessTablesByUserId" resultMap="BaseResultMap">
+        SELECT t1.*
+        FROM t_wyu_table_info t1 JOIN t_wyu_user_table t2 ON t1.ID = t2.TABLE_ID
+        WHERE t2.USER_ID = #{userId,jdbcType=VARCHAR} AND t2.STATUS = 'NORMAL'
+        <if test="isPermit != null and isPermit != ''">
+            AND t2.IS_PERMIT = #{isPermit,jdbcType=VARCHAR}
+        </if>
+        ORDER BY t2.CREATE_TIME
+    </select>
+
+    <!--动态创建表-->
+    <update id="createNewTable">
+        CREATE TABLE ${tableInfo.tableNameEn}
+        (ID VARCHAR(32) PRIMARY KEY ,
+        <foreach collection="columnInfoList" item="columnInfo" separator="," close=")" index="index">
+            ${columnInfo.columnNameEn} ${columnInfo.columnType}
+            <if test="columnInfo.isNull == 'N'.toString() ">
+                NOT NULL
+            </if>
+            <if test="columnInfo.isPrimary == 'Y'.toString() ">
+                UNIQUE
+            </if>
+        </foreach>
+    </update>
+
+    <!--插入动态表-->
+    <insert id="insertIntoDynamicTable">
+        insert into ${tableNameEn}
+        <foreach collection="columnMap.keys" item="item" open="(" close=")" separator=",">
+            ${item}
+        </foreach>
+        VALUE
+        <foreach collection="columnMap.values" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </insert>
+    <!--在动态表中找出所有记录-->
+    <select id="selectFromDynamicTable" parameterType="java.lang.String" resultType="java.util.LinkedHashMap">
+        SELECT *
+        FROM ${tableNameEn}
+    </select>
+</mapper>

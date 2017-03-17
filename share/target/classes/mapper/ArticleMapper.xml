@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.ArticleMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Article">
+        <id column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName"/>
+        <result column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+        <result column="ARTICLE_DEGREE" jdbcType="TINYINT" property="articleDegree"/>
+        <result column="PRICE" jdbcType="DOUBLE" property="price"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="PICTURE_IDS" jdbcType="VARCHAR" property="pictureIds"/>
+        <result column="STATUS" jdbcType="CHAR" property="status"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="CONTACT_MAN" jdbcType="VARCHAR" property="contactMan"/>
+        <result column="CONTACT_WAY" jdbcType="VARCHAR" property="contactWay"/>
+        <result column="ACCESS_ENABLE" jdbcType="CHAR" property="accessEnable"/>
+        <result column="SENDABLE" jdbcType="CHAR" property="sendable"/>
+        <result column="LOANABLE" jdbcType="CHAR" property="loanable"/>
+        <result column="TENANTABLE" jdbcType="CHAR" property="tenantable"/>
+        <result column="MARKRTABLE" jdbcType="CHAR" property="markrtable"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ARTICLE_ID, USER_ID, ARTICLE_NAME, CATEGORY_ID, ARTICLE_DEGREE, PRICE, DESCRIPTION,
+        PICTURE_IDS, STATUS, REMARK, CONTACT_MAN, CONTACT_WAY, ACCESS_ENABLE, SENDABLE, LOANABLE,
+        TENANTABLE, MARKRTABLE, CREATE_TIME
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        t1.*,
+        (SELECT t2.CATEGORY_NAME FROM t_category t2 WHERE t2.CATEGORY_ID = t1.CATEGORY_ID) CATEGORY_NAME
+        from t_article t1
+        where ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_article
+        where ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Article">
+        insert into t_article (ARTICLE_ID, USER_ID, ARTICLE_NAME,
+        CATEGORY_ID, ARTICLE_DEGREE, PRICE,
+        DESCRIPTION, PICTURE_IDS, STATUS,
+        REMARK, CONTACT_MAN, CONTACT_WAY,
+        ACCESS_ENABLE, SENDABLE, LOANABLE,
+        TENANTABLE, MARKRTABLE, CREATE_TIME
+        )
+        values (#{articleId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{articleName,jdbcType=VARCHAR},
+        #{categoryId,jdbcType=VARCHAR}, #{articleDegree,jdbcType=TINYINT}, #{price,jdbcType=DOUBLE},
+        #{description,jdbcType=VARCHAR}, #{pictureIds,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
+        #{remark,jdbcType=VARCHAR}, #{contactMan,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR},
+        #{accessEnable,jdbcType=CHAR}, #{sendable,jdbcType=CHAR}, #{loanable,jdbcType=CHAR},
+        #{tenantable,jdbcType=CHAR}, #{markrtable,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Article">
+        insert into t_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                ARTICLE_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="articleName != null">
+                ARTICLE_NAME,
+            </if>
+            <if test="categoryId != null">
+                CATEGORY_ID,
+            </if>
+            <if test="articleDegree != null">
+                ARTICLE_DEGREE,
+            </if>
+            <if test="price != null">
+                PRICE,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="pictureIds != null">
+                PICTURE_IDS,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="contactMan != null">
+                CONTACT_MAN,
+            </if>
+            <if test="contactWay != null">
+                CONTACT_WAY,
+            </if>
+            <if test="accessEnable != null">
+                ACCESS_ENABLE,
+            </if>
+            <if test="sendable != null">
+                SENDABLE,
+            </if>
+            <if test="loanable != null">
+                LOANABLE,
+            </if>
+            <if test="tenantable != null">
+                TENANTABLE,
+            </if>
+            <if test="markrtable != null">
+                MARKRTABLE,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleName != null">
+                #{articleName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleDegree != null">
+                #{articleDegree,jdbcType=TINYINT},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureIds != null">
+                #{pictureIds,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="contactMan != null">
+                #{contactMan,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="accessEnable != null">
+                #{accessEnable,jdbcType=CHAR},
+            </if>
+            <if test="sendable != null">
+                #{sendable,jdbcType=CHAR},
+            </if>
+            <if test="loanable != null">
+                #{loanable,jdbcType=CHAR},
+            </if>
+            <if test="tenantable != null">
+                #{tenantable,jdbcType=CHAR},
+            </if>
+            <if test="markrtable != null">
+                #{markrtable,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Article">
+        update t_article
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleName != null">
+                ARTICLE_NAME = #{articleName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                CATEGORY_ID = #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleDegree != null">
+                ARTICLE_DEGREE = #{articleDegree,jdbcType=TINYINT},
+            </if>
+            <if test="price != null">
+                PRICE = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureIds != null">
+                PICTURE_IDS = #{pictureIds,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="contactMan != null">
+                CONTACT_MAN = #{contactMan,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                CONTACT_WAY = #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="accessEnable != null">
+                ACCESS_ENABLE = #{accessEnable,jdbcType=CHAR},
+            </if>
+            <if test="sendable != null">
+                SENDABLE = #{sendable,jdbcType=CHAR},
+            </if>
+            <if test="loanable != null">
+                LOANABLE = #{loanable,jdbcType=CHAR},
+            </if>
+            <if test="tenantable != null">
+                TENANTABLE = #{tenantable,jdbcType=CHAR},
+            </if>
+            <if test="markrtable != null">
+                MARKRTABLE = #{markrtable,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Article">
+    update t_article
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      ARTICLE_NAME = #{articleName,jdbcType=VARCHAR},
+      CATEGORY_ID = #{categoryId,jdbcType=VARCHAR},
+      ARTICLE_DEGREE = #{articleDegree,jdbcType=TINYINT},
+      PRICE = #{price,jdbcType=DOUBLE},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      PICTURE_IDS = #{pictureIds,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CONTACT_MAN = #{contactMan,jdbcType=VARCHAR},
+      CONTACT_WAY = #{contactWay,jdbcType=VARCHAR},
+      ACCESS_ENABLE = #{accessEnable,jdbcType=CHAR},
+      SENDABLE = #{sendable,jdbcType=CHAR},
+      LOANABLE = #{loanable,jdbcType=CHAR},
+      TENANTABLE = #{tenantable,jdbcType=CHAR},
+      MARKRTABLE = #{markrtable,jdbcType=CHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ARTICLE_ID = #{articleId,jdbcType=VARCHAR}
+  </update>
+    <!--条件过滤查询-->
+    <sql id="conditions">
+        <if test="userId != null and userId != ''">
+            AND t1.USER_ID = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            AND t1.CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+        </if>
+        <if test="articleDegree != null and articleDegree != ''">
+            AND t1.ARTICLE_DEGREE &gt;= #{articleDegree,jdbcType=TINYINT}
+        </if>
+        <if test="priceLow != null and priceLow != ''">
+            AND t1.PRICE &gt;= #{priceLow,jdbcType=DOUBLE}
+        </if>
+        <if test="priceHigh != null and priceHigh != ''">
+            AND t1.PRICE &lt;= #{priceHigh,jdbcType=DOUBLE}
+        </if>
+        <if test="status != null and status != ''">
+            AND t1.STATUS = #{status,jdbcType=CHAR}
+        </if>
+        <if test="createTimeLow != null and createTimeLow != ''">
+            AND t1.CREATE_TIME &gt;= #{createTimeLow,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTimeHigh != null and createTimeHigh != ''">
+            AND t1.CREATE_TIME &lt;= #{createTimeHigh,jdbcType=TIMESTAMP}
+        </if>
+        <if test="sendable == 'Y'.toString() or loanable == 'Y'.toString() or tenantable == 'Y'.toString() or markrtable == 'Y'.toString()">
+            AND (FALSE
+            <if test="sendable == 'Y'.toString()">
+                OR t1.SENDABLE = 'Y'
+            </if>
+            <if test="loanable == 'Y'.toString()">
+                OR t1.LOANABLE = 'Y'
+            </if>
+            <if test="tenantable == 'Y'.toString()">
+                OR t1.TENANTABLE = 'Y'
+            </if>
+            <if test="markrtable == 'Y'.toString()">
+                OR t1.MARKRTABLE = 'Y'
+            </if>
+            )
+        </if>
+    </sql>
+    <sql id="Column_List">
+        t1.ARTICLE_ID, t1.USER_ID ,t1.ARTICLE_NAME, t1.CATEGORY_ID, t1.ARTICLE_DEGREE, t1.PRICE, t1.DESCRIPTION,
+        t1.PICTURE_IDS, t1.STATUS, t1.REMARK, t1.CONTACT_MAN, t1.CONTACT_WAY, t1.ACCESS_ENABLE, t1.SENDABLE, t1.LOANABLE,
+        t1.TENANTABLE, t1.MARKRTABLE, t1.CREATE_TIME
+    </sql>
+    <select id="selectByConditions" parameterType="cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Column_List"/>,t2.CATEGORY_NAME
+        FROM t_article t1 LEFT JOIN t_category t2 ON t1.CATEGORY_ID=t2.CATEGORY_ID
+        WHERE TRUE
+        <include refid="conditions"/>
+        ORDER BY CREATE_TIME
+    </select>
+    <!--查询用户所发布的共享物品数量-->
+    <select id="countArticleByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_article
+        WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+        AND  STATUS NOT IN ('FORBID','DELETE')
+    </select>
+</mapper>

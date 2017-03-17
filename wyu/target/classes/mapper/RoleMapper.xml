@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.RoleMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Role">
+        <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId"/>
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName"/>
+        <result column="ROLE_REMARK" jdbcType="VARCHAR" property="roleRemark"/>
+        <collection property="permissions" ofType="cn.cbbhy.schoolshare.logic.model.Permission">
+            <id column="PER_ID" jdbcType="VARCHAR" property="perId"/>
+            <result column="PER_NAME" jdbcType="VARCHAR" property="perName"/>
+            <result column="PER_REMARK" jdbcType="VARCHAR" property="perRemark"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ROLE_ID, ROLE_NAME, ROLE_REMARK
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_role
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_role
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Role">
+        insert into t_role (ROLE_ID, ROLE_NAME, ROLE_REMARK
+        )
+        values (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleRemark,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Role">
+        insert into t_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="roleName != null">
+                ROLE_NAME,
+            </if>
+            <if test="roleRemark != null">
+                ROLE_REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleRemark != null">
+                #{roleRemark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Role">
+        update t_role
+        <set>
+            <if test="roleName != null">
+                ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleRemark != null">
+                ROLE_REMARK = #{roleRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Role">
+    update t_role
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ROLE_REMARK = #{roleRemark,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+    <!--为用户分配一个角色-->
+    <insert id="addRoleToUser">
+        INSERT INTO t_user_role (ID,USER_ID,ROLE_ID)
+        VALUE (#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+    </insert>
+    <!--根据用户ID查找角色-->
+    <select id="selectRolesByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT t_role.*
+        FROM t_user_role JOIN t_role ON t_user_role.ROLE_ID = t_role.ROLE_ID
+        WHERE t_user_role.USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+    <!--查找全部角色（包含权限）-->
+    <select id="selectAllRoles" resultMap="BaseResultMap">
+        SELECT t1.ROLE_ID,t1.ROLE_NAME,t1.ROLE_REMARK,t4.PER_ID,t4.PER_NAME,t4.PER_REMARK
+        FROM t_role  t1 LEFT JOIN
+        (SELECT t3.ROLE_ID,t2.* FROM t_permission t2 JOIN t_role_permission t3 ON t2.PER_ID = t3.PER_ID) t4 ON t1.ROLE_ID = t4.ROLE_ID
+    </select>
+</mapper>

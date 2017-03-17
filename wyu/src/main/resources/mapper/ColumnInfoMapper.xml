@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.ColumnInfoMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.ColumnInfo">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="TABLE_ID" jdbcType="VARCHAR" property="tableId" />
+        <result column="COLUMN_NAME_EN" jdbcType="VARCHAR" property="columnNameEn" />
+        <result column="COLUMN_NAME_CN" jdbcType="VARCHAR" property="columnNameCn" />
+        <result column="COLUMN_TYPE" jdbcType="CHAR" property="columnType" />
+        <result column="COLUMN_CONSTRAINT" jdbcType="CHAR" property="columnConstraint" />
+        <result column="IS_PRIMARY" jdbcType="CHAR" property="isPrimary" />
+        <result column="IS_NULL" jdbcType="CHAR" property="isNull" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="SEQUENCE" jdbcType="INTEGER" property="sequence" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TABLE_ID, COLUMN_NAME_EN, COLUMN_NAME_CN, COLUMN_TYPE, COLUMN_CONSTRAINT, IS_PRIMARY,
+        IS_NULL, REMARK, CREATE_TIME, SEQUENCE
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_wyu_column_info
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_wyu_column_info
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.ColumnInfo">
+        insert into t_wyu_column_info (ID, TABLE_ID, COLUMN_NAME_EN,
+        COLUMN_NAME_CN, COLUMN_TYPE, COLUMN_CONSTRAINT,
+        IS_PRIMARY, IS_NULL, REMARK,
+        CREATE_TIME, SEQUENCE)
+        values (#{id,jdbcType=VARCHAR}, #{tableId,jdbcType=VARCHAR}, #{columnNameEn,jdbcType=VARCHAR},
+        #{columnNameCn,jdbcType=VARCHAR}, #{columnType,jdbcType=CHAR}, #{columnConstraint,jdbcType=CHAR},
+        #{isPrimary,jdbcType=CHAR}, #{isNull,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{sequence,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.ColumnInfo">
+        insert into t_wyu_column_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="columnNameEn != null">
+                COLUMN_NAME_EN,
+            </if>
+            <if test="columnNameCn != null">
+                COLUMN_NAME_CN,
+            </if>
+            <if test="columnType != null">
+                COLUMN_TYPE,
+            </if>
+            <if test="columnConstraint != null">
+                COLUMN_CONSTRAINT,
+            </if>
+            <if test="isPrimary != null">
+                IS_PRIMARY,
+            </if>
+            <if test="isNull != null">
+                IS_NULL,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="sequence != null">
+                SEQUENCE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="tableId != null">
+                #{tableId,jdbcType=VARCHAR},
+            </if>
+            <if test="columnNameEn != null">
+                #{columnNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="columnNameCn != null">
+                #{columnNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="columnType != null">
+                #{columnType,jdbcType=CHAR},
+            </if>
+            <if test="columnConstraint != null">
+                #{columnConstraint,jdbcType=CHAR},
+            </if>
+            <if test="isPrimary != null">
+                #{isPrimary,jdbcType=CHAR},
+            </if>
+            <if test="isNull != null">
+                #{isNull,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sequence != null">
+                #{sequence,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.ColumnInfo">
+        update t_wyu_column_info
+        <set>
+            <if test="tableId != null">
+                TABLE_ID = #{tableId,jdbcType=VARCHAR},
+            </if>
+            <if test="columnNameEn != null">
+                COLUMN_NAME_EN = #{columnNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="columnNameCn != null">
+                COLUMN_NAME_CN = #{columnNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="columnType != null">
+                COLUMN_TYPE = #{columnType,jdbcType=CHAR},
+            </if>
+            <if test="columnConstraint != null">
+                COLUMN_CONSTRAINT = #{columnConstraint,jdbcType=CHAR},
+            </if>
+            <if test="isPrimary != null">
+                IS_PRIMARY = #{isPrimary,jdbcType=CHAR},
+            </if>
+            <if test="isNull != null">
+                IS_NULL = #{isNull,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sequence != null">
+                SEQUENCE = #{sequence,jdbcType=INTEGER},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.ColumnInfo">
+    update t_wyu_column_info
+    set TABLE_ID = #{tableId,jdbcType=VARCHAR},
+      COLUMN_NAME_EN = #{columnNameEn,jdbcType=VARCHAR},
+      COLUMN_NAME_CN = #{columnNameCn,jdbcType=VARCHAR},
+      COLUMN_TYPE = #{columnType,jdbcType=CHAR},
+      COLUMN_CONSTRAINT = #{columnConstraint,jdbcType=CHAR},
+      IS_PRIMARY = #{isPrimary,jdbcType=CHAR},
+      IS_NULL = #{isNull,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      SEQUENCE = #{sequence,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--批量插入-->
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into t_wyu_column_info (ID, TABLE_ID, COLUMN_NAME_EN,
+        COLUMN_NAME_CN, COLUMN_TYPE, COLUMN_CONSTRAINT,
+        IS_PRIMARY, IS_NULL, REMARK, CREATE_TIME,SEQUENCE
+        )values
+        <foreach collection="columnInfoList" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.tableId,jdbcType=VARCHAR}, #{item.columnNameEn,jdbcType=VARCHAR},
+            #{item.columnNameCn,jdbcType=VARCHAR}, #{item.columnType,jdbcType=CHAR}, #{item.columnConstraint,jdbcType=CHAR},
+            #{item.isPrimary,jdbcType=CHAR}, #{item.isNull,jdbcType=CHAR}, #{item.remark,jdbcType=VARCHAR}, now(),#{item.sequence,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <!--查询表格的所有字段-->
+    <select id="selectByTableId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_wyu_column_info
+        where TABLE_ID = #{tableId,jdbcType=VARCHAR}
+        ORDER BY SEQUENCE
+    </select>
+
+</mapper>

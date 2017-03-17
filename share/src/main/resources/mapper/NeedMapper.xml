@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.NeedMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Need">
+        <id column="NEED_ID" jdbcType="VARCHAR" property="needId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+        <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="STATUS" jdbcType="CHAR" property="status"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    NEED_ID, USER_ID, CATEGORY_ID, ARTICLE_NAME, DESCRIPTION, STATUS, REMARK, CREATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_need
+        where NEED_ID = #{needId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_need
+    where NEED_ID = #{needId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Need">
+    insert into t_need (NEED_ID, USER_ID, CATEGORY_ID, 
+      ARTICLE_NAME, DESCRIPTION, STATUS, 
+      REMARK, CREATE_TIME)
+    values (#{needId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, 
+      #{articleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Need">
+        insert into t_need
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="needId != null">
+                NEED_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="categoryId != null">
+                CATEGORY_ID,
+            </if>
+            <if test="articleName != null">
+                ARTICLE_NAME,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="needId != null">
+                #{needId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleName != null">
+                #{articleName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Need">
+        update t_need
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                CATEGORY_ID = #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleName != null">
+                ARTICLE_NAME = #{articleName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where NEED_ID = #{needId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Need">
+    update t_need
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      CATEGORY_ID = #{categoryId,jdbcType=VARCHAR},
+      ARTICLE_NAME = #{articleName,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where NEED_ID = #{needId,jdbcType=VARCHAR}
+  </update>
+    <!--条件过滤查询-->
+    <sql id="conditions">
+        <if test="userId != null and userId != ''">
+            AND t1.USER_ID = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            AND t1.CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status != ''">
+            AND t1.STATUS = #{status,jdbcType=CHAR}
+        </if>
+        <if test="createTimeLow != null and createTimeLow != ''">
+            AND t1.CREATE_TIME &gt;= #{createTimeLow,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTimeHigh != null and createTimeHigh != ''">
+            AND t1.CREATE_TIME &lt;= #{createTimeHigh,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+    <sql id="Column_List">
+        t1.NEED_ID, t1.USER_ID, t1.CATEGORY_ID, t1.ARTICLE_NAME, t1.DESCRIPTION, t1.STATUS, t1.REMARK, t1.CREATE_TIME
+    </sql>
+    <select id="selectByConditions" parameterType="cn.cbbhy.schoolshare.logic.model.condition.NeedFilterCondition"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Column_List"/>,t2.CATEGORY_NAME
+        FROM t_need t1 LEFT JOIN t_category t2 ON t1.CATEGORY_ID=t2.CATEGORY_ID
+        WHERE 1=1
+        <include refid="conditions"/>
+    </select>
+</mapper>

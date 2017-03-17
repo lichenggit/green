@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.CategoryMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.Category">
+        <id column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+        <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+        <result column="CATEGORY_LEVEL" jdbcType="TINYINT" property="categoryLevel"/>
+        <result column="SUPER_ID" jdbcType="VARCHAR" property="superId"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="STATUS" jdbcType="CHAR" property="status"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    CATEGORY_ID, CATEGORY_NAME, CATEGORY_LEVEL, SUPER_ID, DESCRIPTION, CREATE_TIME, STATUS, 
+    REMARK
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_category
+        where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_category
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.Category">
+    insert into t_category (CATEGORY_ID, CATEGORY_NAME, CATEGORY_LEVEL, 
+      SUPER_ID, DESCRIPTION, CREATE_TIME, 
+      STATUS, REMARK)
+    values (#{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryLevel,jdbcType=TINYINT}, 
+      #{superId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.Category">
+        insert into t_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                CATEGORY_ID,
+            </if>
+            <if test="categoryName != null">
+                CATEGORY_NAME,
+            </if>
+            <if test="categoryLevel != null">
+                CATEGORY_LEVEL,
+            </if>
+            <if test="superId != null">
+                SUPER_ID,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryName != null">
+                #{categoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryLevel != null">
+                #{categoryLevel,jdbcType=TINYINT},
+            </if>
+            <if test="superId != null">
+                #{superId,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.Category">
+        update t_category
+        <set>
+            <if test="categoryName != null">
+                CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryLevel != null">
+                CATEGORY_LEVEL = #{categoryLevel,jdbcType=TINYINT},
+            </if>
+            <if test="superId != null">
+                SUPER_ID = #{superId,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.Category">
+    update t_category
+    set CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR},
+      CATEGORY_LEVEL = #{categoryLevel,jdbcType=TINYINT},
+      SUPER_ID = #{superId,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+  </update>
+    <!--条件查询-->
+    <sql id="conditions">
+        <if test="categoryId != null">
+            AND CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryName != null">
+            AND CATEGORY_NAME = #{categoryName,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryLevel != null">
+            AND CATEGORY_LEVEL = #{categoryLevel,jdbcType=TINYINT}
+        </if>
+        <if test="superId != null">
+            AND SUPER_ID = #{superId,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            AND STATUS = #{status,jdbcType=CHAR}
+        </if>
+    </sql>
+    <select id="selectByConditions" parameterType="cn.cbbhy.schoolshare.logic.model.Category" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_category
+        WHERE 1=1
+        <include refid="conditions"/>
+    </select>
+</mapper>
