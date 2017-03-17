@@ -1,5 +1,7 @@
 package cn.cbbhy.schoolshare.base.util;
 
+import redis.clients.jedis.Jedis;
+
 import java.util.UUID;
 
 /**
@@ -14,10 +16,5 @@ public class IdGenerator {
      */
     public static String generateId() {
         return UUID.randomUUID().toString().replace("-", "");
-    }
-
-    public static void main(String[] args) {
-        System.out.println(generateId());
-        System.out.println(generateId());
     }
 }
