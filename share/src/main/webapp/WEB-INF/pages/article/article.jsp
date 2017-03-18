@@ -152,6 +152,7 @@
                     $(domEle).removeClass("btn-success");
                     $(domEle).addClass("btn-default");
                 }
+
             }
         });
     }
@@ -220,7 +221,7 @@
                 var articleId=$(this).attr("data-articleId");
                 var ownerId=$(this).attr("data-ownerId");
                 $.post(url,{"articleId":articleId,"ownerId":ownerId},function (data) {
-                    alert("已经加入了共享池");
+                   swal("已经加入了共享池","","success");
                 });
             };
         });
@@ -247,6 +248,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.code == 0) {
+                    swal(result.desc,"","success");
                     setAttentionStatus(domEle, articleId);
                 }
             },
