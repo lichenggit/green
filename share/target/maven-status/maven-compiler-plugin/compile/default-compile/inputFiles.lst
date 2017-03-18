@@ -22,6 +22,7 @@
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/model/vo/SelectModel.java
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/dao/impl/NeedDaoImpl.java
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/dao/impl/AttentionDaoImpl.java
+/home/duoyi/IdeaProjects/green/share/src/main/java/Test.java
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/dao/NeedDao.java
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/model/Attention.java
 /home/duoyi/IdeaProjects/green/share/src/main/java/cn/cbbhy/schoolshare/logic/shiro/AccessEnableJudge.java

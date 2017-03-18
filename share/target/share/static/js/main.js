@@ -55,7 +55,9 @@ $.load = {
     form: function (formid, successtext) {
         var url = $('#' + formid).attr("action");
         var result = $('#' + formid).serializeArray();
-        $.load.aShowAlert(url, result, successtext);
+        $('#page-wrapper').load(url, result, function () {
+            swal(successtext, "", "success");
+        });
     },
     /**
      * 表单重置
@@ -116,5 +118,33 @@ $.load = {
                 swal(successtext, "", "success");
             }
         });
+    },
+    /**
+     * 带警告弹框和成功弹框的带参数的越连接
+     * @param url
+     * @param json
+     * @param warmingText
+     * @param successtext
+     */
+    aShowAlert: function (url, json, warmingText, successtext) {
+        swal({
+                title: warmingText,
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $('#page-wrapper').load(url, json, function (data, status, xhr) {
+                        if (status == "success") {
+                            swal(successtext, "", "success");
+                        }
+                    });
+                }
+            });
     }
 }

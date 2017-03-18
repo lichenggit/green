@@ -3,6 +3,7 @@ cn/cbbhy/schoolshare/logic/model/Need.class
 cn/cbbhy/schoolshare/logic/controller/AccountController.class
 cn/cbbhy/schoolshare/base/web/converter/IntegerConverter.class
 cn/cbbhy/schoolshare/logic/controller/HomeController.class
+Test.class
 cn/cbbhy/schoolshare/logic/dao/impl/UserDaoImpl.class
 cn/cbbhy/schoolshare/logic/dao/impl/ArticleDaoImpl.class
 cn/cbbhy/schoolshare/logic/mapping/PermissionMapper.class

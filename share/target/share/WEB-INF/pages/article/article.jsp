@@ -86,7 +86,7 @@
                                     <c:otherwise>￥${item.price}</c:otherwise>
                                 </c:choose>
                             </h4>
-                            <a href="${basePath}/article/details.html?articleId=${item.articleId}"
+                            <a href="${basePath}/article/details.html?articleId=${item.articleId}" class="article_desc"
                                target="_blank">${item.articleName}:${item.description}</a>
                             <h4>
                                 <span class="label label-info">${item.articleDegree}成新</span>
@@ -115,9 +115,11 @@
                                 <button id="${item.articleId}" type="button" data-toggle="tooltip" title=""
                                         class="btn btn-default btn-attention">关注
                                 </button>
-                                <button type="button" class="btn btn-default btn_gain"
-                                        path='<c:url value="/article/gainContacts.html?articleId=${item.articleId}&userId=${item.userId}"/> '>
-                                    一键获取
+                                <button type="button" class="btn btn-default btn_pool" data-articleId="${item.articleId}" data-ownerId="${item.userId}">
+                                    加到共享池
+                                </button>
+                                <button type="button" class="btn btn-default btn_gain" data-articleId="${item.articleId}">
+                                    下单
                                 </button>
                             </div>
                         </div>
@@ -150,11 +152,13 @@
                     $(domEle).removeClass("btn-success");
                     $(domEle).addClass("btn-default");
                 }
+
             }
         });
     }
 
     $(document).ready(function () {
+        $('.article_desc').ellipsis();
         //初始化类别
         $.ajax({
             type: "GET",
@@ -186,14 +190,41 @@
             };
             setAttentionStatus(this, this.id);
         });
-        //初始化购买按钮
+        //初始化下单按钮
         $('.btn_gain').each(function (i) {
             this.onclick = function () {
-                var url = $(this).attr("path");
-                window.open(url);
+                var articleId=$(this).attr("data-articleId");
+                var url = "${basePath}/order/addorder.json";
+                var orderDetails={};
+                orderDetails.articleCount=1;
+                orderDetails.articleId=articleId;
+                var orderDetailsList=[];
+                orderDetailsList.push(orderDetails);
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data:JSON.stringify(orderDetailsList),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                       if(data.code==0){
+                           window.open("${basePath}/order/payorder.html?shareOrderId="+data.desc);
+                       }
+                    }
+                })
             };
         });
-
+        //初始化加入共享池按钮
+        $('.btn_pool').each(function (i) {
+            this.onclick = function () {
+                var url = "${basePath}/order/addtosharepool.json";
+                var articleId=$(this).attr("data-articleId");
+                var ownerId=$(this).attr("data-ownerId");
+                $.post(url,{"articleId":articleId,"ownerId":ownerId},function (data) {
+                   swal("已经加入了共享池","","success");
+                });
+            };
+        });
         //模态框
         $("#myModal").on("hidden.bs.modal", function () {
             $(this).removeData("bs.modal");
@@ -217,6 +248,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.code == 0) {
+                    swal(result.desc,"","success");
                     setAttentionStatus(domEle, articleId);
                 }
             },
@@ -225,5 +257,4 @@
             }
         });
     }
-
 </script>
