@@ -151,8 +151,7 @@
     </select>
     <!--查找用户的共享池的数量-->
     <select id="countSharePoolByUser" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT
-        count(*)
+        SELECT count(*)
         FROM t_share_pool
         WHERE USER_ID = #{userId,jdbcType=VARCHAR} AND STATUS='NORMAL'
     </select>

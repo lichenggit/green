@@ -31,15 +31,18 @@ public class MainController {
     public String index(Model model) {
         Subject subject = SecurityUtils.getSubject();
         //自动登录
+        User user = null;
         if (subject.isRemembered() && !subject.isAuthenticated()) {
-            User user = accountService.selectUserByUsername((String) subject.getPrincipal());
+            user = accountService.selectUserByUsername((String) subject.getPrincipal());
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             try {
                 subject.login(token);
-                model.addAttribute("poolCount",sharePoolService.countSharePoolByUser(user.getUserId()));
             } catch (Exception e) {
 
             }
+        }
+        if (user != null) {
+            model.addAttribute("poolCount", sharePoolService.countSharePoolByUser(user.getUserId()));
         }
         return "index";
     }
