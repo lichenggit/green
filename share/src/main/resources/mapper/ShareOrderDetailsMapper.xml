@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.ShareOrderDetailsMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.ShareOrderDetails">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="SHARE_ORDER_ID" jdbcType="VARCHAR" property="shareOrderId" />
+    <result column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId" />
+    <result column="ARTICLE_COUNT" jdbcType="INTEGER" property="articleCount" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, SHARE_ORDER_ID, ARTICLE_ID, ARTICLE_COUNT, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_share_order_details
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_share_order_details
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.ShareOrderDetails">
+    insert into t_share_order_details (ID, SHARE_ORDER_ID, ARTICLE_ID, 
+      ARTICLE_COUNT, STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{shareOrderId,jdbcType=VARCHAR}, #{articleId,jdbcType=VARCHAR}, 
+      #{articleCount,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.ShareOrderDetails">
+    insert into t_share_order_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="shareOrderId != null">
+        SHARE_ORDER_ID,
+      </if>
+      <if test="articleId != null">
+        ARTICLE_ID,
+      </if>
+      <if test="articleCount != null">
+        ARTICLE_COUNT,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shareOrderId != null">
+        #{shareOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null">
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCount != null">
+        #{articleCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.ShareOrderDetails">
+    update t_share_order_details
+    <set>
+      <if test="shareOrderId != null">
+        SHARE_ORDER_ID = #{shareOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null">
+        ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCount != null">
+        ARTICLE_COUNT = #{articleCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.ShareOrderDetails">
+    update t_share_order_details
+    set SHARE_ORDER_ID = #{shareOrderId,jdbcType=VARCHAR},
+      ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      ARTICLE_COUNT = #{articleCount,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--为一个订单添加订单明细-->
+    <insert id="addOrderDetails">
+        insert into t_share_order_details (ID, SHARE_ORDER_ID, ARTICLE_ID,
+        ARTICLE_COUNT, STATUS)
+        values
+        <foreach collection="orderDetailsList" item="orderDetail" separator=",">
+            (#{orderDetail.id,jdbcType=VARCHAR}, #{orderDetail.shareOrderId,jdbcType=VARCHAR}, #{orderDetail.articleId,jdbcType=VARCHAR},
+            #{orderDetail.articleCount,jdbcType=INTEGER}, #{orderDetail.status,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+</mapper>

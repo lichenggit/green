@@ -1,6 +1,7 @@
 package cn.cbbhy.schoolshare.logic.controller;
 
 import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
+import cn.cbbhy.schoolshare.logic.service.ArticleScanService;
 import cn.cbbhy.schoolshare.logic.service.AttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ public class AttentionController {
 
     @Autowired
     private AttentionService attentionService;
+    @Autowired
+    private ArticleScanService articleScanService;
 
     /**
      * 查看当前用户的收藏页
@@ -95,5 +98,12 @@ public class AttentionController {
             jsonModel.setDesc("取消关注失败");
         }
         return jsonModel;
+    }
+
+    @RequestMapping(value = "/listscan.html")
+    public String listArticlesScan(HttpSession session, Model model) {
+        String userId = (String) session.getAttribute("userId");
+        model.addAttribute("list", articleScanService.listArticleScanByUserId(userId));
+        return "attention/scanArticles";
     }
 }

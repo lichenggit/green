@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.ArticleScanMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.ArticleScan">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+      <association property="article" javaType="cn.cbbhy.schoolshare.logic.model.Article">
+          <id column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+          <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+          <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName"/>
+          <result column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+          <result column="ARTICLE_DEGREE" jdbcType="TINYINT" property="articleDegree"/>
+          <result column="PRICE" jdbcType="DOUBLE" property="price"/>
+          <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+          <result column="PICTURE_IDS" jdbcType="VARCHAR" property="pictureIds"/>
+          <result column="STATUS" jdbcType="CHAR" property="status"/>
+          <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+          <result column="CONTACT_MAN" jdbcType="VARCHAR" property="contactMan"/>
+          <result column="CONTACT_WAY" jdbcType="VARCHAR" property="contactWay"/>
+          <result column="ACCESS_ENABLE" jdbcType="CHAR" property="accessEnable"/>
+          <result column="SENDABLE" jdbcType="CHAR" property="sendable"/>
+          <result column="LOANABLE" jdbcType="CHAR" property="loanable"/>
+          <result column="TENANTABLE" jdbcType="CHAR" property="tenantable"/>
+          <result column="MARKRTABLE" jdbcType="CHAR" property="markrtable"/>
+          <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+          <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+      </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ID, ARTICLE_ID, REMARK, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_article_scan
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_article_scan
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.ArticleScan">
+    insert into t_article_scan (ID, USER_ID, ARTICLE_ID, 
+      REMARK, CREATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{articleId,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.ArticleScan">
+    insert into t_article_scan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="articleId != null">
+        ARTICLE_ID,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null">
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.ArticleScan">
+    update t_article_scan
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null">
+        ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.ArticleScan">
+    update t_article_scan
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--查找用户的浏览记录-->
+    <select id="listArticleScanByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        t1.*,t2.*
+        from t_article_scan t1 join t_article  t2 on t1.ARTICLE_ID = t2.ARTICLE_ID
+        where t1.USER_ID = #{userId,jdbcType=VARCHAR}
+        limit 10
+    </select>
+
+</mapper>

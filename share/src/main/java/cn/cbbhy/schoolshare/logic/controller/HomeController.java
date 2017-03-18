@@ -33,5 +33,6 @@ public class HomeController {
         model.addAttribute("articles", articles);
         model.addAttribute("needs", needs);
         return "home/home";
+//        return "<script>we();</script>";
     }
 }

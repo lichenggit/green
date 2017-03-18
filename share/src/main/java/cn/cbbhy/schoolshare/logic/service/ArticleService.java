@@ -15,7 +15,7 @@ public interface ArticleService {
      *
      * @param article
      */
-    void addArticle(Article article);
+    void addArticle(String userId, Article article);
 
 
     /**
@@ -24,7 +24,7 @@ public interface ArticleService {
      * @param articleId
      * @return
      */
-    Article searchArticleById(String articleId);
+    Article searchArticleById(String userId, String articleId);
 
     /**
      * 条件查询

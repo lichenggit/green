@@ -1,10 +1,8 @@
 package cn.cbbhy.schoolshare.logic.controller;
 
-import cn.cbbhy.schoolshare.logic.model.AccumulatePoint;
 import cn.cbbhy.schoolshare.logic.model.Article;
 import cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition;
 import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
-import cn.cbbhy.schoolshare.logic.service.AccumulatePointService;
 import cn.cbbhy.schoolshare.logic.service.ArticleService;
 import cn.cbbhy.schoolshare.logic.service.CategoryService;
 import com.alibaba.fastjson.JSON;
@@ -34,8 +32,6 @@ public class ArticleController {
     private ArticleService articleService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private AccumulatePointService accumulatePointService;
 
     /**
      * 物品列表页
@@ -46,7 +42,6 @@ public class ArticleController {
      */
     @RequestMapping(value = "/index.html", method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model, ArticleFilterCondition condition) {
-        System.out.println("+++" + JSON.toJSONString(condition));
         model.addAttribute("condition", condition);
         model.addAttribute("list", articleService.selectByConditions(condition));
         return "article/article";
@@ -60,8 +55,9 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/details.html", method = RequestMethod.GET)
-    public String details(Model model, String articleId) {
-        model.addAttribute("item", articleService.searchArticleById(articleId));
+    public String details( HttpSession session,Model model, String articleId) {
+        String userId = (String) session.getAttribute("userId");
+        model.addAttribute("item", articleService.searchArticleById(userId,articleId));
         return "article/articleDetails";
     }
 
@@ -75,7 +71,7 @@ public class ArticleController {
     @RequestMapping(value = "/gainContacts.html", method = RequestMethod.GET)
     public String gainContacts(HttpServletRequest request, HttpSession session, String articleId, Model model) {
         String userId = (String) session.getAttribute("userId");
-        Article article = articleService.searchArticleById(articleId);
+        Article article = articleService.searchArticleById(userId,articleId);
         model.addAttribute("accessEnable", article.getAccessEnable());
         switch (article.getAccessEnable()) {
             case "NONE":
@@ -144,17 +140,7 @@ public class ArticleController {
     @RequestMapping(value = "/addArticle.html", method = RequestMethod.POST)
     public String addArticleSubmit(HttpSession session, Article article) {
         String userId = (String) session.getAttribute("userId");
-        article.setUserId(userId);
-        articleService.addArticle(article);
-
-        //积分
-        AccumulatePoint accumulatePoint = new AccumulatePoint();
-        accumulatePoint.setUserId(userId);
-        accumulatePoint.setPointType("PUBLISH");
-        accumulatePoint.setPoints(50);
-        accumulatePoint.setRemark("发布闲置物品");
-        accumulatePointService.addPointItem(accumulatePoint);
-
+        articleService.addArticle(userId,article);
         return "redirect:/admin.html";
     }
 
@@ -172,5 +158,4 @@ public class ArticleController {
         model.addAttribute("status", status);
         return "article/myArticles";
     }
-
 }
