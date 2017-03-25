@@ -3,6 +3,7 @@ package cn.cbbhy.schoolshare.logic.service;
 import cn.cbbhy.schoolshare.logic.model.ShareOrder;
 import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
 import cn.cbbhy.schoolshare.logic.model.SharePool;
+import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
 
 import java.util.List;
 
@@ -33,23 +34,42 @@ public interface SharePoolService {
 
     /**
      * 查找订单
+     *
+     * @param userId
      * @param shareOrderId
      * @return
      */
-    ShareOrder findShareOrder(String shareOrderId);
+    ShareOrder findShareOrder(String userId, String shareOrderId);
+
+    /**
+     * 根据ID查找已经支付的订单联系方式
+     *
+     * @param userId
+     * @param shareOrderId
+     * @return
+     */
+    ShareOrder findPayShareOrder(String userId, String shareOrderId);
+
 
     /**
      * 新建一个订单
      * @param userId
      * @param orderDetailsList
      */
-    String addOneOrder(String userId,List<ShareOrderDetails>orderDetailsList);
+    JsonModel addOneOrder(String userId, List<ShareOrderDetails> orderDetailsList);
 
     /**
-     *
+     * 支付订单
+     * @param userId
+     * @param shareOrderId
+     */
+    boolean addPayOneOrder(String userId, String shareOrderId);
+
+    /**
+     *查找用户的所有订单
      * @param userId
      * @return
      */
-    List<ShareOrder> listShareOrderByUsere(String userId);
+    List<ShareOrder> listShareOrderByUser(String userId);
 
 }

@@ -24,4 +24,11 @@ public interface ShareOrderDetailsMapper {
      * @param orderDetailsList
      */
     void addOrderDetails(@Param("orderDetailsList") List<ShareOrderDetails> orderDetailsList);
+
+    /**
+     * 查询订单明细
+     * @param shareOrderId
+     * @return
+     */
+    List<ShareOrderDetails>selectOrderDetails(String shareOrderId);
 }

@@ -3,6 +3,7 @@ package cn.cbbhy.schoolshare.logic.dao.impl;
 import cn.cbbhy.schoolshare.logic.dao.ArticleDao;
 import cn.cbbhy.schoolshare.logic.mapping.ArticleMapper;
 import cn.cbbhy.schoolshare.logic.model.Article;
+import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
 import cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,10 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public void updateArticle(Article article) {
         articleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    public int updateArticleStatus(List<ShareOrderDetails> shareOrderDetailsList) {
+        return articleMapper.updateArticleStatus(shareOrderDetailsList);
     }
 }

@@ -24,7 +24,7 @@
                         <td>${item.description}</td>
                         <td>${item.remark}</td>
                         <td><fmt:formatDate value="${item.createTime}" pattern="yyyy年MM月dd日"/></td>
-                        <td><a href="javascript:;haveNeed();">我有此物</a></td>
+                        <td><a href="javascript:;haveNeed('${item.needId}','${item.articleName}','${item.userId}');">我有此物</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -33,7 +33,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    function haveNeed() {
-        alert("我们会将此消息报告需要的人，感谢您的分享！");
+    function haveNeed(needId,articleName,neederId) {
+        $.post("${basePath}/need/addNeedHave.json",{"needId":needId,"needName":articleName,"neederId":neederId},function (data) {
+            if(data.code==0){
+                swal("我们会将此消息报告需要的人，感谢您的分享！","","success");
+            }else {
+                swal("操作失败","","error");
+            }
+        });
     }
 </script> 

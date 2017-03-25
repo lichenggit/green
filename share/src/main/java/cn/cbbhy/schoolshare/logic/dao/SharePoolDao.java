@@ -12,7 +12,7 @@ import java.util.List;
 public interface SharePoolDao {
     //共享池
 
-    SharePool findByUserAndArticleId(String userId,String articleId);
+    SharePool findByUserAndArticleId(String userId, String articleId);
     /**
      *查找用户的共享池的所有物品
      * @param userId
@@ -28,15 +28,28 @@ public interface SharePoolDao {
      * @param userId
      * @return
      */
-    int countSharePoolByUser(String userId);
+    Integer countSharePoolByUser(String userId);
 
 
     /**
      * 根据id查找订单
+     *
+     * @param userId
      * @param shareOrderId
      * @return
      */
-   ShareOrder findShareOrder(String shareOrderId);
+   ShareOrder findShareOrder(String userId, String shareOrderId);
+
+
+    /**
+     * 根据ID查找已经支付的订单联系方式
+     *
+     * @param userId
+     * @param shareOrderId
+     * @return
+     */
+    ShareOrder findPayShareOrder(String userId, String shareOrderId);
+
 
     /**
      * 新建一个订单
@@ -45,17 +58,31 @@ public interface SharePoolDao {
     void addOneOrder(ShareOrder shareOrder);
 
     /**
+     * 支付订单
+     * @param userId
+     * @param shareOrderId
+     */
+    int payOneOrder(String userId, String shareOrderId);
+
+    /**
      * 为一个订单添加订单明细
      * @param orderDetailsList
      */
     void addOrderDetails(List<ShareOrderDetails> orderDetailsList);
 
     /**
-     *
+     * 更新共享池的状态
+     * @param userId
+     * @param orderDetailsList
+     */
+    void updateSharePoolStatus(String userId,List<ShareOrderDetails> orderDetailsList);
+
+
+    /**
+     *查找用户的所有订单
      * @param userId
      * @return
      */
-    List<ShareOrder> listShareOrderByUsere(String userId);
-
+    List<ShareOrder> listShareOrderByUser(String userId);
 
 }

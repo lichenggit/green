@@ -151,9 +151,16 @@
     </select>
     <!--查找用户的共享池的数量-->
     <select id="countSharePoolByUser" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT count(*)
+        SELECT sum(ARTICLE_COUNT)
         FROM t_share_pool
         WHERE USER_ID = #{userId,jdbcType=VARCHAR} AND STATUS='NORMAL'
     </select>
-
+    <!--批量更新状态-->
+    <update id="updateSharePoolStatus">
+        UPDATE t_share_pool SET STATUS = 'FINISHED'WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+        AND ARTICLE_ID IN
+        <foreach collection="shareOrderDetailsList" item="item" separator="," open="(" close=")">
+            #{item.articleId}
+        </foreach>
+    </update>
 </mapper>

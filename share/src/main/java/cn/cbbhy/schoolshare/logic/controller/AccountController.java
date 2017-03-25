@@ -1,12 +1,14 @@
 package cn.cbbhy.schoolshare.logic.controller;
 
 import cn.cbbhy.schoolshare.base.util.VerifyCode;
+import cn.cbbhy.schoolshare.logic.model.StudentAuth;
 import cn.cbbhy.schoolshare.logic.model.User;
 import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
 import cn.cbbhy.schoolshare.logic.service.AccountService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,21 @@ public class AccountController {
         }
         HttpServlet servlet;
         return url;
+    }
+
+    @RequestMapping("/login.json")
+    @ResponseBody
+    public JsonModel loginDo(String username, String password) {
+        JsonModel jsonModel = new JsonModel(0, "登录成功");
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        try {
+            subject.login(token);
+        } catch (Exception e) {
+            jsonModel.setCode(1);
+            jsonModel.setDesc("登录失败");
+        }
+        return jsonModel;
     }
 
     /**
@@ -137,4 +154,14 @@ public class AccountController {
         accountService.addUser(user);
         return "redirect:/user/login.html";
     }
+    @RequestMapping(value = "/addStudentAuthc.json", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonModel studentAuthc(HttpSession session,StudentAuth studentAuth) {
+        String userId = (String) session.getAttribute("userId");
+        JsonModel jsonModel = new JsonModel(0,"success");
+        studentAuth.setUserId(userId);
+        accountService.addStudentAuth(studentAuth);
+        return jsonModel;
+    }
+
 }

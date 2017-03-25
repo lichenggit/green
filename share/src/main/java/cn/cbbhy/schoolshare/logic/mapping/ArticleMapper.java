@@ -1,7 +1,9 @@
 package cn.cbbhy.schoolshare.logic.mapping;
 
 import cn.cbbhy.schoolshare.logic.model.Article;
+import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
 import cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -31,4 +33,6 @@ public interface ArticleMapper {
      * @return
      */
     int countArticleByUserId(String userId);
+
+    int updateArticleStatus(@Param("shareOrderDetailsList") List<ShareOrderDetails> shareOrderDetailsList);
 }

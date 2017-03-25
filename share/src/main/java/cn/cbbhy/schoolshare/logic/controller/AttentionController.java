@@ -32,7 +32,7 @@ public class AttentionController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/myAttentions.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/adminAttentions.html", method = RequestMethod.GET)
     public String myAttention(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userId");
         model.addAttribute("list", attentionService.searchAttentionsByUserId(userId));
@@ -86,7 +86,7 @@ public class AttentionController {
      * @param articleId
      * @return
      */
-    @RequestMapping(value = "/removeAttention.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteAttention.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonModel removeAttention(HttpSession session, String articleId) {
         JsonModel jsonModel = new JsonModel(0, "取消关注成功");
@@ -100,7 +100,7 @@ public class AttentionController {
         return jsonModel;
     }
 
-    @RequestMapping(value = "/listscan.html")
+    @RequestMapping(value = "/adminScan.html")
     public String listArticlesScan(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userId");
         model.addAttribute("list", articleScanService.listArticleScanByUserId(userId));

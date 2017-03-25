@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         AccumulatePoint accumulatePoint = new AccumulatePoint();
         accumulatePoint.setUserId(userId);
         accumulatePoint.setPointType("PUBLISH");
-        accumulatePoint.setPoints(50);
+        accumulatePoint.setPoints(6);
         accumulatePoint.setRemark("发布闲置物品");
         accumulatePointService.addPointItem(accumulatePoint);
     }

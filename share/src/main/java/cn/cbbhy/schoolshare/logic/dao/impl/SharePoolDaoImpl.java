@@ -45,14 +45,24 @@ public class SharePoolDaoImpl implements SharePoolDao {
     }
 
     @Override
-    public int countSharePoolByUser(String userId) {
+    public Integer countSharePoolByUser(String userId) {
         return sharePoolMapper.countSharePoolByUser(userId);
     }
 
     @Override
-    public ShareOrder findShareOrder(String shareOrderId) {
-        return shareOrderMapper.selectShareOrder(shareOrderId);
+    public ShareOrder findShareOrder(String userId, String shareOrderId) {
+        ShareOrder shareOrder = shareOrderMapper.selectByPrimaryKey(shareOrderId);
+        shareOrder.setOrderDetailsList(shareOrderDetailsMapper.selectOrderDetails(shareOrderId));
+        return shareOrder;
     }
+
+    @Override
+    public ShareOrder findPayShareOrder( String userId, String shareOrderId) {
+        ShareOrder shareOrder = shareOrderMapper.selectByPrimaryKey(shareOrderId);
+        shareOrder.setOrderDetailsList(shareOrderDetailsMapper.selectOrderDetails(shareOrderId));
+        return shareOrder;
+    }
+
 
     @Override
     public void addOrderDetails(List<ShareOrderDetails> orderDetailsList) {
@@ -60,13 +70,27 @@ public class SharePoolDaoImpl implements SharePoolDao {
     }
 
     @Override
-    public List<ShareOrder> listShareOrderByUsere(String userId) {
-        return shareOrderMapper.listShareOrderByUsere(userId);
+    public void updateSharePoolStatus(String userId, List<ShareOrderDetails> orderDetailsList) {
+        sharePoolMapper.updateSharePoolStatus(userId,orderDetailsList);
+    }
+
+    @Override
+    public List<ShareOrder> listShareOrderByUser(String userId) {
+        List<ShareOrder> list = shareOrderMapper.listShareOrderByUsere(userId);
+        for(ShareOrder shareOrder:list){
+            shareOrder.setOrderDetailsList(shareOrderDetailsMapper.selectOrderDetails(shareOrder.getId()));
+        }
+        return list;
     }
 
     @Override
     public void addOneOrder(ShareOrder shareOrder) {
         shareOrderMapper.insertSelective(shareOrder);
+    }
+
+    @Override
+    public int payOneOrder(String userId, String shareOrderId) {
+        return shareOrderMapper.payOneOrder(userId,shareOrderId);
     }
 
 }

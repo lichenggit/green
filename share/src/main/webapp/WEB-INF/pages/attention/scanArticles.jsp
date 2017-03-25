@@ -45,16 +45,6 @@
                                     </c:when>
                                 </c:choose>
                             </h4>
-                            <div class="btn-group">
-                                <button id="${item.article.articleId}" type="button" data-toggle="tooltip"
-                                        title="点击取消关注"
-                                        class="btn btn-default btn-attention">取消关注
-                                </button>
-                                <button type="button" class="btn btn-default btn_gain"
-                                        path='<c:url value="/article/gainContacts.html?articleId=${item.article.articleId}&userId=${item.article.userId}"/> '>
-                                    一键获取
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,32 +52,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.btn-attention').each(function (i) {
-            this.onclick = function () {
-                $.ajax({
-                    type: "POST",
-                    url: "${basePath}/attention/removeAttention.json",
-                    data: {"articleId": this.id},
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.code == 0) {
-                            $.load.a("${basePath}/attention/myAttentions.html");
-                        }
-                    },
-                    error: function () {
-                        alert("请登录");
-                    }
-                });
-            };
-        });
-        //初始化购买按钮
-        $('.btn_gain').each(function (i) {
-            this.onclick = function () {
-                var url = $(this).attr("path");
-                window.open(url);
-            };
-        });
-    })
-</script> 

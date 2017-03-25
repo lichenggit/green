@@ -5,19 +5,22 @@ import cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition;
 import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
 import cn.cbbhy.schoolshare.logic.service.ArticleService;
 import cn.cbbhy.schoolshare.logic.service.CategoryService;
-import com.alibaba.fastjson.JSON;
+import cn.cbbhy.schoolshare.logic.websocket.WebsocketHandler;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -32,6 +35,9 @@ public class ArticleController {
     private ArticleService articleService;
     @Autowired
     private CategoryService categoryService;
+    @Resource
+    private WebsocketHandler websocketHandler;
+
 
     /**
      * 物品列表页
@@ -41,9 +47,12 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/index.html", method = {RequestMethod.GET, RequestMethod.POST})
-    public String index(Model model, ArticleFilterCondition condition) {
+    public String index(Model model, ArticleFilterCondition condition) throws IOException {
         model.addAttribute("condition", condition);
+        condition.setStatus("NORMAL");
         model.addAttribute("list", articleService.selectByConditions(condition));
+        TextMessage textMessage = new TextMessage("test");
+        websocketHandler.sendMessageToUsers(textMessage);
         return "article/article";
     }
 
@@ -59,49 +68,6 @@ public class ArticleController {
         String userId = (String) session.getAttribute("userId");
         model.addAttribute("item", articleService.searchArticleById(userId,articleId));
         return "article/articleDetails";
-    }
-
-    /**
-     * 获取物品的联系方式
-     *
-     * @param model
-     * @param articleId
-     * @return
-     */
-    @RequestMapping(value = "/gainContacts.html", method = RequestMethod.GET)
-    public String gainContacts(HttpServletRequest request, HttpSession session, String articleId, Model model) {
-        String userId = (String) session.getAttribute("userId");
-        Article article = articleService.searchArticleById(userId,articleId);
-        model.addAttribute("accessEnable", article.getAccessEnable());
-        switch (article.getAccessEnable()) {
-            case "NONE":
-                break;
-            case "AUTHC":
-                Subject subject = SecurityUtils.getSubject();
-                if (!subject.isAuthenticated()) {
-                    WebUtils.saveRequest(request);
-                    return "redirect:/user/login.html";
-                }
-                break;
-            case "SHARER":
-                subject = SecurityUtils.getSubject();
-                if (!subject.isAuthenticated()) {
-                    WebUtils.saveRequest(request);
-                    return "redirect:/user/login.html";
-                }
-                int total = articleService.countArticleByUserId(userId);
-                if (0 == total) {
-                    model.addAttribute("gainContactsResultMsg", "很抱歉，该物品所有者要求只有分享过自己物品的用户才能获取该物品。");
-                    return "article/contacts-wait";
-                }
-                break;
-            case "REQUEST":
-                model.addAttribute("gainContactsResultMsg", "我们以将您的请求转发给了该物品所有者，请耐心等候，一有消息，我们会马上通知您。");
-                return "article/contacts-wait";
-        }
-        model.addAttribute("article", article);
-        model.addAttribute("user", articleService.searchContacts(articleId, article.getUserId()));
-        return "article/contacts";
     }
 
     /**
@@ -141,7 +107,7 @@ public class ArticleController {
     public String addArticleSubmit(HttpSession session, Article article) {
         String userId = (String) session.getAttribute("userId");
         articleService.addArticle(userId,article);
-        return "redirect:/admin.html";
+        return "redirect:/index.html";
     }
 
     /**

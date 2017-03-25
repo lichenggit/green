@@ -1,6 +1,7 @@
 package cn.cbbhy.schoolshare.logic.dao;
 
 import cn.cbbhy.schoolshare.logic.model.Article;
+import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
 import cn.cbbhy.schoolshare.logic.model.condition.ArticleFilterCondition;
 
 import java.util.List;
@@ -45,4 +46,7 @@ public interface ArticleDao {
      * @param article
      */
     void updateArticle(Article article);
+
+    int updateArticleStatus(List<ShareOrderDetails> shareOrderDetailsList);
+
 }

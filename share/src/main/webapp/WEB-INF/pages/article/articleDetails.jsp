@@ -72,10 +72,14 @@
                            role="button">
                             关注
                         </a>
-                        <a href="${basePath}/article/gainContacts.html?articleId=${item.articleId}&userId=${item.userId}"
-                           target="_blank" class="btn btn-success btn-lg" role="button">
-                            一键获取
-                        </a>
+                        <button type="button" class="btn btn-default btn-lg btn_pool"
+                                data-articleId="${item.articleId}" data-ownerId="${item.userId}">
+                            加到共享池
+                        </button>
+                        <button type="button" class="btn btn-success btn-lg btn_gain"
+                                data-articleId="${item.articleId}">
+                            下单
+                        </button>
                     </p>
                 </div>
             </div>
@@ -125,7 +129,7 @@
         var value = $(domEle).val();
         var url = "${basePath}/attention/addAttention.json";//关注
         if (value == 1) {
-            url = "${basePath}/attention/removeAttention.json";//取消关注
+            url = "${basePath}/attention/deleteAttention.json";//取消关注
         }
         $.ajax({
             type: "POST",
@@ -133,12 +137,12 @@
             data: {"articleId": articleId},
             dataType: "json",
             success: function (result) {
-                if (result.code == 0) {
+                if (result.code == 2) {
+                    onNoLogin();
+                } else if (result.code == 0) {
+                    swal(result.desc, "", "success");
                     setAttentionStatus(domEle, articleId);
                 }
-            },
-            error: function () {
-                alert("请登录");
             }
         });
     }

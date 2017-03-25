@@ -11,6 +11,9 @@ public class ShareOrderDetails {
 
     private String status;
 
+    /**/
+    private Article article;
+
     public String getId() {
         return id;
     }
@@ -49,5 +52,13 @@ public class ShareOrderDetails {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 }

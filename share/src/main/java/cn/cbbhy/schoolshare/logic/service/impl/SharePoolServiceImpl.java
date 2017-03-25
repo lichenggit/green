@@ -1,15 +1,20 @@
 package cn.cbbhy.schoolshare.logic.service.impl;
 
 import cn.cbbhy.schoolshare.base.util.IdGenerator;
+import cn.cbbhy.schoolshare.logic.dao.ArticleDao;
 import cn.cbbhy.schoolshare.logic.dao.SharePoolDao;
-import cn.cbbhy.schoolshare.logic.model.ShareOrder;
-import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
-import cn.cbbhy.schoolshare.logic.model.SharePool;
+import cn.cbbhy.schoolshare.logic.dao.UserDao;
+import cn.cbbhy.schoolshare.logic.model.*;
+import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
+import cn.cbbhy.schoolshare.logic.service.AccumulatePointService;
 import cn.cbbhy.schoolshare.logic.service.SharePoolService;
+import com.alibaba.fastjson.JSON;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +25,12 @@ import java.util.List;
 public class SharePoolServiceImpl implements SharePoolService {
     @Autowired
     private SharePoolDao sharePoolDao;
+    @Autowired
+    private ArticleDao articleDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private AccumulatePointService accumulatePointService;
 
     @Override
     public List<SharePool> listSharePoolByUser(String userId) {
@@ -28,9 +39,9 @@ public class SharePoolServiceImpl implements SharePoolService {
 
     @Override
     public void addToSharePool(SharePool sharePool) {
-        SharePool oldSharePool= sharePoolDao.findByUserAndArticleId(sharePool.getUserId(),sharePool.getArticleId());
-        if(oldSharePool!=null){
-            oldSharePool.setArticleCount(oldSharePool.getArticleCount()+1);
+        SharePool oldSharePool = sharePoolDao.findByUserAndArticleId(sharePool.getUserId(), sharePool.getArticleId());
+        if (oldSharePool != null) {
+            oldSharePool.setArticleCount(oldSharePool.getArticleCount() + 1);
             sharePoolDao.updateSharePool(oldSharePool);
             return;
         }
@@ -43,35 +54,130 @@ public class SharePoolServiceImpl implements SharePoolService {
 
     @Override
     public int countSharePoolByUser(String userId) {
-        return sharePoolDao.countSharePoolByUser(userId);
+        Integer count = sharePoolDao.countSharePoolByUser(userId);
+        if(count==null){
+            return 0;
+        }
+        return count.intValue();
     }
 
     @Override
-    public ShareOrder findShareOrder(String shareOrderId) {
-        return sharePoolDao.findShareOrder(shareOrderId);
+    public ShareOrder findShareOrder(String userId, String shareOrderId) {
+        return sharePoolDao.findShareOrder(userId,shareOrderId);
     }
 
     @Override
-    public String addOneOrder(String userId,List<ShareOrderDetails>orderDetailsList){
+    public ShareOrder findPayShareOrder(String userId, String shareOrderId) {
+        ShareOrder shareOrder =sharePoolDao.findPayShareOrder(userId,shareOrderId);
+        List<ShareOrderDetails> list = shareOrder.getOrderDetailsList();
+        for(ShareOrderDetails orderDetails:list){
+         Article article = orderDetails.getArticle();
+            User user =userDao.selectUserByUserId(article.getUserId());
+            article.setUser(user);
+        }
+        return shareOrder;
+    }
+
+    @Override
+    public JsonModel addOneOrder(String userId, List<ShareOrderDetails> orderDetailsList) {
+        List<String> list = judgeOwnerDefineAccess(orderDetailsList, userId);
+        if (list != null && list.size() > 0) {
+            JsonModel jsonModel = new JsonModel(1, "该物品你无权获取",list);
+            return jsonModel;
+        }
         ShareOrder shareOrder = new ShareOrder();
         shareOrder.setUserId(userId);
         shareOrder.setId(IdGenerator.generateId());
         shareOrder.setCreateTime(new Date());
-        shareOrder.setStatus("NORMAL");
-        for(ShareOrderDetails orderDetails:orderDetailsList){
+        shareOrder.setStatus("READY_PAY");
+        for (ShareOrderDetails orderDetails : orderDetailsList) {
             orderDetails.setId(IdGenerator.generateId());
             orderDetails.setStatus("NORMAL");
             orderDetails.setShareOrderId(shareOrder.getId());
         }
+        articleDao.updateArticleStatus(orderDetailsList);
         sharePoolDao.addOneOrder(shareOrder);
         sharePoolDao.addOrderDetails(orderDetailsList);
-
-        return shareOrder.getId();
+        sharePoolDao.updateSharePoolStatus(userId,orderDetailsList);
+        return new JsonModel(0, shareOrder.getId());
     }
 
     @Override
-    public List<ShareOrder> listShareOrderByUsere(String userId) {
-        return sharePoolDao.listShareOrderByUsere(userId);
+    public boolean addPayOneOrder(String userId, String shareOrderId) {
+        boolean result = sharePoolDao.payOneOrder(userId,shareOrderId)>0;
+        if(result){
+            //积分
+            AccumulatePoint accumulatePoint = new AccumulatePoint();
+            accumulatePoint.setUserId(userId);
+            accumulatePoint.setPointType("GAIN");
+            accumulatePoint.setPoints(-3);
+            accumulatePoint.setRemark("获取");
+            accumulatePointService.addPointItem(accumulatePoint);
+        }
+        return result;
+    }
+
+
+    /**
+     * @param orderDetailsList
+     * @param userId
+     * @return
+     */
+    private List<String> judgeOwnerDefineAccess(List<ShareOrderDetails> orderDetailsList, String userId) {
+        List<String> list = new ArrayList<>();
+        for (ShareOrderDetails orderDetails : orderDetailsList) {
+            Article article = articleDao.searchArticleById(orderDetails.getArticleId());
+            switch (article.getAccessEnable()) {
+                case "NONE":
+                    break;
+                case "AUTHC":
+                    Subject subject = SecurityUtils.getSubject();
+                    if (!subject.isAuthenticated()) {
+                        list.add(article.getArticleId());
+                    }
+                    break;
+                case "SHARER":
+                    int total = articleDao.countArticleByUserId(userId);
+                    if (total <= 0) {
+                        list.add(article.getArticleId());
+                    }
+                    break;
+                case "REQUEST":
+                    list.add(article.getArticleId());
+                    break;
+                case "GREAT":
+                    int points = accumulatePointService.countUserPoints(userId);
+                    total = articleDao.countArticleByUserId(userId);
+                    if(points<4||total<=0){
+                        list.add(article.getArticleId());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return list;
+    }
+
+    private String getOwnerDenyTips(String ownerDefineAccess) {
+        switch (ownerDefineAccess) {
+            case "NONE":
+                return "";
+            case "AUTHC":
+                return "未登录用户不能获取";
+            case "SHARER":
+                return "未分享过的用户不能获取";
+            case "REQUEST":
+                return "未经同意不能获取";
+            default:
+                return "未知错误";
+        }
+    }
+
+
+    @Override
+    public List<ShareOrder> listShareOrderByUser(String userId) {
+        return sharePoolDao.listShareOrderByUser(userId);
     }
 
 }

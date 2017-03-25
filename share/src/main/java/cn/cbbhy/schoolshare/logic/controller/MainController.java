@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,25 +25,20 @@ import java.util.Map;
 public class MainController {
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private SharePoolService sharePoolService;
 
     @RequestMapping("/index.html")
     public String index(Model model) {
         Subject subject = SecurityUtils.getSubject();
         //自动登录
-        User user = null;
         if (subject.isRemembered() && !subject.isAuthenticated()) {
-            user = accountService.selectUserByUsername((String) subject.getPrincipal());
+            User user = accountService.selectUserByUsername((String) subject.getPrincipal());
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             try {
                 subject.login(token);
+                subject.getSession().setAttribute("userId", user.getUserId());
             } catch (Exception e) {
 
             }
-        }
-        if (user != null) {
-            model.addAttribute("poolCount", sharePoolService.countSharePoolByUser(user.getUserId()));
         }
         return "index";
     }
@@ -58,10 +54,10 @@ public class MainController {
     static {
         URL_MAP.put("articles", "/article/adminArticles.html");
         URL_MAP.put("needs", "/need/adminNeed.html");
-        URL_MAP.put("attentions", "/attention/myAttentions.html");
-        URL_MAP.put("scans", "/attention/listscan.html");
-        URL_MAP.put("sharepools", "/order/sharepools.html");
-        URL_MAP.put("shareorders", "/order/shareorders.html");
+        URL_MAP.put("attentions", "/attention/adminAttentions.html");
+        URL_MAP.put("scans", "/attention/adminscan.html");
+        URL_MAP.put("sharepools", "/order/adminsharepools.html");
+        URL_MAP.put("shareorders", "/order/adminshareorders.html");
     }
 
     private String getAdminUrl(String type) {

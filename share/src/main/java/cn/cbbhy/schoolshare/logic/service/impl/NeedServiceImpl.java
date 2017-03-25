@@ -3,6 +3,7 @@ package cn.cbbhy.schoolshare.logic.service.impl;
 import cn.cbbhy.schoolshare.base.util.IdGenerator;
 import cn.cbbhy.schoolshare.logic.dao.NeedDao;
 import cn.cbbhy.schoolshare.logic.model.Need;
+import cn.cbbhy.schoolshare.logic.model.NeedHave;
 import cn.cbbhy.schoolshare.logic.model.condition.NeedFilterCondition;
 import cn.cbbhy.schoolshare.logic.model.constant.Status;
 import cn.cbbhy.schoolshare.logic.service.NeedService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,5 +51,22 @@ public class NeedServiceImpl implements NeedService {
         needDao.updateNeedBySelective(need);
     }
 
+    @Override
+    public List<NeedHave> selectByNeederId(String neederId) {
+        return needDao.selectByNeederId(neederId);
+    }
+
+    @Override
+    public void addNeedHave(NeedHave needHave) {
+        needHave.setId(IdGenerator.generateId());
+        needHave.setStatus("NORMAL");
+        needHave.setCreateTime(new Date());
+        needDao.addNeedHave(needHave);
+    }
+
+    @Override
+    public  List<HashMap<String ,Object>> matchNeedArticle() {
+        return needDao.matchNeedArticle();
+    }
 
 }

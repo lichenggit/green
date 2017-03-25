@@ -1,6 +1,6 @@
 package cn.cbbhy.schoolshare.logic.mapping;
 
-import cn.cbbhy.schoolshare.logic.controller.ListController;
+import cn.cbbhy.schoolshare.logic.model.ShareOrderDetails;
 import cn.cbbhy.schoolshare.logic.model.SharePool;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +25,7 @@ public interface SharePoolMapper {
      * @param articleId
      * @return
      */
-    SharePool findByUserAndArticleId(@Param("userId") String userId, @Param("articleId")String articleId);
+    SharePool findByUserAndArticleId(@Param("userId") String userId, @Param("articleId") String articleId);
 
     /**
      *查找用户的共享池的所有物品
@@ -39,6 +39,13 @@ public interface SharePoolMapper {
      * @param userId
      * @return
      */
-    int countSharePoolByUser(String userId);
+    Integer countSharePoolByUser(String userId);
+
+    /**
+     * 更新共享池的状态
+     * @param userId
+     * @param shareOrderDetailsList
+     */
+    void updateSharePoolStatus(@Param("userId") String userId,@Param("shareOrderDetailsList")List<ShareOrderDetails> shareOrderDetailsList);
 
 }

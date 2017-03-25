@@ -311,4 +311,11 @@
         WHERE USER_ID = #{userId,jdbcType=VARCHAR}
         AND  STATUS NOT IN ('FORBID','DELETE')
     </select>
+    <!--批量更新状态-->
+    <update id="updateArticleStatus">
+        UPDATE t_article SET STATUS = 'FINISHED'WHERE ARTICLE_ID IN 
+        <foreach collection="shareOrderDetailsList" item="item" separator="," open="(" close=")">
+            #{item.articleId}
+        </foreach>
+    </update>
 </mapper>

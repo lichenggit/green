@@ -1,5 +1,6 @@
 package cn.cbbhy.schoolshare.logic.service;
 
+import cn.cbbhy.schoolshare.logic.model.StudentAuth;
 import cn.cbbhy.schoolshare.logic.model.User;
 
 import java.util.Set;
@@ -15,6 +16,14 @@ public interface AccountService {
      * @return
      */
     User selectUserByUsername(String username);
+
+    /**
+     * 根据用户Id查找用户
+     *
+     * @param userId
+     * @return
+     */
+    User selectUserByUserId(String userId);
 
     /**
      * 根据用户名查找角色
@@ -38,4 +47,12 @@ public interface AccountService {
      * @param user
      */
     void addUser(User user);
+
+    /**
+     * 学生认证
+     * @param studentAuth
+     */
+    void addStudentAuth(StudentAuth studentAuth);
+
+    int countAuthByUser(String userId);
 }

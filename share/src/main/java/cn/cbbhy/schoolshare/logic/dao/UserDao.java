@@ -2,6 +2,7 @@ package cn.cbbhy.schoolshare.logic.dao;
 
 import cn.cbbhy.schoolshare.logic.model.Permission;
 import cn.cbbhy.schoolshare.logic.model.Role;
+import cn.cbbhy.schoolshare.logic.model.StudentAuth;
 import cn.cbbhy.schoolshare.logic.model.User;
 
 import java.util.List;
@@ -48,4 +49,12 @@ public interface UserDao {
      * @param user
      */
     void addUser(User user);
+
+    /**
+     * 学生认证
+     * @param studentAuth
+     */
+    void addStudentAuth(StudentAuth studentAuth);
+
+    int countAuthByUser(String userId);
 }
