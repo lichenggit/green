@@ -1,6 +1,5 @@
 package cn.cbbhy.schoolshare.logic.controller;
 
-import cn.cbbhy.schoolshare.base.util.MailSend;
 import cn.cbbhy.schoolshare.base.util.StatusUtil;
 import cn.cbbhy.schoolshare.logic.model.Need;
 import cn.cbbhy.schoolshare.logic.model.NeedHave;
@@ -9,6 +8,7 @@ import cn.cbbhy.schoolshare.logic.model.condition.NeedFilterCondition;
 import cn.cbbhy.schoolshare.logic.model.vo.JsonModel;
 import cn.cbbhy.schoolshare.logic.service.AccountService;
 import cn.cbbhy.schoolshare.logic.service.NeedService;
+import mail.MailSend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,7 +92,7 @@ public class NeedController {
         if (user != null && user.getEmail() != null) {
             String url = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath() + "/article/details.html?articleId=" + needHave.getNeedId();
             String mailText = "亲爱的用户，您需要的" + needHave.getNeedName() + "已经有了，"
-                    + "<a href = \"" + url + "\">" + "点击查看</a>";
+                    + "<a href = " + url + ">" + "点击查看</a>";
             MailSend mailSend = new MailSend(user.getEmail());
             try {
                 mailSend.sendMail("需求用品通知", mailText);

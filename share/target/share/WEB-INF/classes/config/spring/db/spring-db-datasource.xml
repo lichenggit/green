@@ -25,23 +25,21 @@
 	<!--<context:property-placeholder/> 这个tag只能用一次，spring用了单例模式， 需要加载多个文件，需要用通配符-->
 	<context:property-placeholder location="classpath:config/dataSource/ds-*.properties"/>
 
-	<!-- 配置数据源 -->
+	<!-- 配置读数据源 -->
 	<!-- dbcp start -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<bean id="dataSource-read" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-
+		<!--参数-->
 		<property name="initialSize" value="${jdbc.initialSize}"/>
 		<property name="maxActive" value="${jdbc.maxActive}"/>
 		<property name="maxIdle" value="${jdbc.maxIdle}"/>
 		<property name="minIdle" value="${jdbc.minIdle}"/>
 		<property name="maxWait" value="${jdbc.maxWait}"/>
-
 		<!-- 事务相关 -->
 		<property name="defaultAutoCommit" value="${jdbc.defaultAutoCommit}"/>
-
 		<!-- 解决mysql 8小时问题 -->
 		<property name="testWhileIdle" value="${jdbc.testWhileIdle}"/>
 		<property name="testOnBorrow" value="${jdbc.testOnBorrow}"/>
@@ -50,6 +48,36 @@
 		<property name="validationQuery" value="${jdbc.validationQuery}"/>
 	</bean>
 	<!-- dbcp end -->
+
+	<!-- 配置写数据源 -->
+	<!-- dbcp start -->
+	<bean id="dataSource-write" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!--参数-->
+		<property name="initialSize" value="${jdbc.initialSize}"/>
+		<property name="maxActive" value="${jdbc.maxActive}"/>
+		<property name="maxIdle" value="${jdbc.maxIdle}"/>
+		<property name="minIdle" value="${jdbc.minIdle}"/>
+		<property name="maxWait" value="${jdbc.maxWait}"/>
+		<!-- 事务相关 -->
+		<property name="defaultAutoCommit" value="${jdbc.defaultAutoCommit}"/>
+		<!-- 解决mysql 8小时问题 -->
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}"/>
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}"/>
+		<property name="testOnReturn" value="${jdbc.testOnReturn}"/>
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}"/>
+		<property name="validationQuery" value="${jdbc.validationQuery}"/>
+	</bean>
+	<!-- dbcp end -->
+
+    <bean id="dataSource" class="cn.cbbhy.schoolshare.base.datasource.DynamicDataSource">
+        <!--<property name="readDataSource" ref="dataSource-read"/>-->
+        <property name="writeDataSource" ref="dataSource-write"/>
+    </bean>
+
 
 	<!-- c3p0 start
 	<bean id="dataSource_c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">

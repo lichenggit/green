@@ -2,16 +2,16 @@ package cn.cbbhy.schoolshare.logic.controller;
 
 import cn.cbbhy.schoolshare.logic.model.User;
 import cn.cbbhy.schoolshare.logic.service.AccountService;
-import cn.cbbhy.schoolshare.logic.service.SharePoolService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,5 +68,12 @@ public class MainController {
             return "";
         }
         return URL_MAP.get(type);
+    }
+
+    @RequestMapping("/test.json")
+    @ResponseBody
+    public String test(@RequestBody String json,String age){
+        System.out.println(json+age);
+        return json+age;
     }
 }

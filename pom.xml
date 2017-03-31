@@ -17,7 +17,7 @@
         <!-- project start -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.name>shine</project.build.name>
-        <project.build.jdk>1.7</project.build.jdk>
+        <project.build.jdk>1.8</project.build.jdk>
         <!-- project end -->
 
         <!-- spring -->
@@ -86,6 +86,9 @@
 
         <!--jedis-->
         <jedis.version>2.9.0</jedis.version>
+
+        <!--mail-->
+        <mail-version>1.5.5</mail-version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -392,6 +395,26 @@
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
             </dependency>
+
+            <!--websocket start-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-websocket</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!--websocket end-->
+            <!--mail start-->
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${mail-version}</version>
+            </dependency>
+            <!--mail end-->
         </dependencies>
     </dependencyManagement>
     <build>

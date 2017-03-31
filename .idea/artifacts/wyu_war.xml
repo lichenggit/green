@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="wyu:war">
+    <output-path>$PROJECT_DIR$/wyu/target</output-path>
+    <root id="archive" name="wyu.war">
+      <element id="artifact" artifact-name="wyu:war exploded" />
+    </root>
+  </artifact>
+</component>

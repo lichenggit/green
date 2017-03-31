@@ -33,6 +33,11 @@
 		</property>
 		<!-- 自动扫描并映射mapper文件中的alias  -->
 		<property name="typeAliasesPackage" value="cn.cbbhy.schoolshare.logic.model" />
+		<property name="plugins">
+			<array>
+				<bean class="cn.cbbhy.schoolshare.base.datasource.DynamicPlugin"/>
+			</array>
+		</property>
 	</bean>
 
 	<!-- DAO接口所在包名， Spring会自动查找其下的类 -->

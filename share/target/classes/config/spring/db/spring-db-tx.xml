@@ -22,7 +22,7 @@
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- 事务管理 -->
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="txManager" class="cn.cbbhy.schoolshare.base.datasource.DynamicDataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 

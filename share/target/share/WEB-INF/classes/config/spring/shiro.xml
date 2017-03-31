@@ -84,8 +84,9 @@
                 /**/login.html = vali,authc
                 /**/admin.html = authc
                 /**/index.html = anon
+                /**/admin* = authc
                 /**/add* = authc
-                <!--/**/gain* = authc-->
+                /**/delete* = authc
                 /static/** = anon
                 /** = anon
             </value>

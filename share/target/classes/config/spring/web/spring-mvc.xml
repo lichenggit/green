@@ -6,6 +6,7 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:security="http://www.springframework.org/schema/security"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/security
@@ -19,7 +20,9 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!-- 自动扫描指定目录 在spring.xml中已经配置了扫描所有包，这里就不需要再配置-->
     <context:component-scan base-package="cn.cbbhy.schoolshare.logic.controller"/>
@@ -57,6 +60,8 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <bean class="cn.cbbhy.schoolshare.logic.websocket.WebSocketConfig"/>
 
     <!-- 全局拦截器 -->
     <mvc:interceptors>

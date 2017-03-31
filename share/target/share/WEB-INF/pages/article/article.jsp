@@ -115,10 +115,12 @@
                                 <button id="${item.articleId}" type="button" data-toggle="tooltip" title=""
                                         class="btn btn-default btn-attention">关注
                                 </button>
-                                <button type="button" class="btn btn-default btn_pool" data-articleId="${item.articleId}" data-ownerId="${item.userId}">
+                                <button type="button" class="btn btn-default btn_pool"
+                                        data-articleId="${item.articleId}" data-ownerId="${item.userId}">
                                     加到共享池
                                 </button>
-                                <button type="button" class="btn btn-default btn_gain" data-articleId="${item.articleId}">
+                                <button type="button" class="btn btn-default btn_gain"
+                                        data-articleId="${item.articleId}">
                                     下单
                                 </button>
                             </div>
@@ -131,6 +133,55 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        //初始化下单按钮
+        $('.btn_gain').each(function (i) {
+            this.onclick = function () {
+                var articleId = $(this).attr("data-articleId");
+                var url = "${basePath}/order/addorder.json";
+                var orderDetails = {};
+                orderDetails.articleCount = 1;
+                orderDetails.articleId = articleId;
+                var orderDetailsList = [];
+                orderDetailsList.push(orderDetails);
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: JSON.stringify(orderDetailsList),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 2) {
+                            onNoLogin();
+                        } else if (data.code == 0) {
+                            window.open("${basePath}/order/readypayorder.html?shareOrderId=" + data.desc);
+                        } else {
+                            swal(data.desc);
+                        }
+                    }
+                })
+            };
+        });
+
+
+        //初始化加入共享池按钮
+        $('.btn_pool').each(function (i) {
+            this.onclick = function () {
+                var url = "${basePath}/order/addtosharepool.json";
+                var articleId = $(this).attr("data-articleId");
+                var ownerId = $(this).attr("data-ownerId");
+                $.post(url, {"articleId": articleId, "ownerId": ownerId}, function (data) {
+                    if (data.code == 2) {
+                        onNoLogin();
+                    } else if (data.code == 0) {
+
+                        swal("已经加入了共享池", "", "success");
+                    }
+                }, "json");
+            };
+        });
+    });
+
     //设置关注按钮状态
     function setAttentionStatus(domEle, articleId) {
         $.ajax({
@@ -190,45 +241,6 @@
             };
             setAttentionStatus(this, this.id);
         });
-        //初始化下单按钮
-        $('.btn_gain').each(function (i) {
-            this.onclick = function () {
-                var articleId=$(this).attr("data-articleId");
-                var url = "${basePath}/order/addorder.json";
-                var orderDetails={};
-                orderDetails.articleCount=1;
-                orderDetails.articleId=articleId;
-                var orderDetailsList=[];
-                orderDetailsList.push(orderDetails);
-                $.ajax({
-                    type: "post",
-                    url: url,
-                    data:JSON.stringify(orderDetailsList),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                       if(data.code==0){
-                           window.open("${basePath}/order/payorder.html?shareOrderId="+data.desc);
-                       }
-                    }
-                })
-            };
-        });
-        //初始化加入共享池按钮
-        $('.btn_pool').each(function (i) {
-            this.onclick = function () {
-                var url = "${basePath}/order/addtosharepool.json";
-                var articleId=$(this).attr("data-articleId");
-                var ownerId=$(this).attr("data-ownerId");
-                $.post(url,{"articleId":articleId,"ownerId":ownerId},function (data) {
-                   swal("已经加入了共享池","","success");
-                });
-            };
-        });
-        //模态框
-        $("#myModal").on("hidden.bs.modal", function () {
-            $(this).removeData("bs.modal");
-        });
     });
     //查询
     function searchInfo() {
@@ -239,7 +251,7 @@
         var value = $(domEle).val();
         var url = "${basePath}/attention/addAttention.json";//关注
         if (value == 1) {
-            url = "${basePath}/attention/removeAttention.json";//取消关注
+            url = "${basePath}/attention/deleteAttention.json";//取消关注
         }
         $.ajax({
             type: "POST",
@@ -247,13 +259,12 @@
             data: {"articleId": articleId},
             dataType: "json",
             success: function (result) {
-                if (result.code == 0) {
-                    swal(result.desc,"","success");
+                if (result.code == 2) {
+                    onNoLogin();
+                } else if (result.code == 0) {
+                    swal(result.desc, "", "success");
                     setAttentionStatus(domEle, articleId);
                 }
-            },
-            error: function () {
-                alert("请登录");
             }
         });
     }

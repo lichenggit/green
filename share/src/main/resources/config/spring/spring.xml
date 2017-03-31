@@ -33,6 +33,8 @@ http://www.springframework.org/schema/beans ">
     <!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
     <bean class="cn.cbbhy.schoolshare.base.web.aware.SpringContextHolder" lazy-init="true"/>
 
+    <!-- task相关 -->
+    <import resource="classpath:config/spring/spring-quartz.xml"/>
     <!-- 加载DB层配置文件 -->
     <import resource="classpath:config/spring/db/spring-db.xml"/>
     <!-- aop相关的 -->
@@ -40,8 +42,7 @@ http://www.springframework.org/schema/beans ">
     <!-- shrio相关 -->
     <import resource="classpath:config/spring/shiro.xml"/>
     <!--websocket相关-->
-    <!--<import resource="classpath:config/spring/spring-websocket.xml"/>-->
-    <!-- task相关 -->
-    <!--<import resource="classpath:config/spring/quartz.xml"/>-->
+    <import resource="classpath:config/spring/spring-websocket.xml"/>
+
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>

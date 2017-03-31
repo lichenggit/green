@@ -49,19 +49,19 @@
                     </li>
                     <li>
                         <a href="javascript:;"
-                           path='<c:url value="/attention/myAttentions.html"/> '><span
+                           path='<c:url value="/attention/adminAttentions.html"/> '><span
                                 class="glyphicon glyphicon-apple"></span>关注的商品</a>
                     </li>
                     <li>
-                        <a href="javascript:;" path='<c:url value="/attention/listscan.html"/> '><span
+                        <a href="javascript:;" path='<c:url value="/attention/adminScan.html"/> '><span
                                 class="glyphicon glyphicon-apple"></span>浏览历史（前10）</a>
                     </li>
                     <li>
-                        <a href="javascript:;" path='<c:url value="/order/sharepools.html"/> '><span
+                        <a href="javascript:;" path='<c:url value="/order/adminsharepools.html"/> '><span
                                 class="glyphicon glyphicon-apple"></span>共享池</a>
                     </li>
                     <li>
-                        <a href="javascript:;" path='<c:url value="/order/shareorders.html"/> '><span
+                        <a href="javascript:;" path='<c:url value="/order/adminshareorders.html"/> '><span
                                 class="glyphicon glyphicon-apple"></span>订单</a>
                     </li>
                 </ul>

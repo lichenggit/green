@@ -103,19 +103,4 @@
 
     <!-- 开启 aspetj 注解扫描 如果需要再SpringMVC中使用AOP，需要添加以下配置，如果需要再Service层面使用AOP，需要在spring.xml中也配置-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-
-    <bean class="cn.cbbhy.schoolshare.logic.websocket.WebSocketConfig"/>
-    <!--<bean id="websocket" class="cn.cbbhy.schoolshare.logic.websocket.WebsocketHandler"/>-->
-    <!--<websocket:handlers>-->
-        <!--<websocket:mapping path="/websocket" handler="websocket"/>-->
-        <!--<websocket:handshake-interceptors>-->
-            <!--<bean class="cn.cbbhy.schoolshare.logic.websocket.HandshakeInterceptor"/>-->
-        <!--</websocket:handshake-interceptors>-->
-    <!--</websocket:handlers>-->
-    <!--&lt;!&ndash; 配置websocket消息的最大缓冲区长度 &ndash;&gt;-->
-    <!--<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">-->
-        <!--<property name="maxTextMessageBufferSize" value="8192"/>-->
-        <!--<property name="maxBinaryMessageBufferSize" value="8192"/>-->
-    <!--</bean>-->
 </beans>
