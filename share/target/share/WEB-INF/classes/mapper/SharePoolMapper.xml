@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.SharePoolMapper">
+    <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.SharePool">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="OWNER_ID" jdbcType="VARCHAR" property="ownerId"/>
+        <result column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+        <result column="ARTICLE_COUNT" jdbcType="INTEGER" property="articleCount"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <association property="article"  javaType="cn.cbbhy.schoolshare.logic.model.Article">
+            <id column="ARTICLE_ID" jdbcType="VARCHAR" property="articleId"/>
+            <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+            <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName"/>
+            <result column="CATEGORY_ID" jdbcType="VARCHAR" property="categoryId"/>
+            <result column="ARTICLE_DEGREE" jdbcType="TINYINT" property="articleDegree"/>
+            <result column="PRICE" jdbcType="DOUBLE" property="price"/>
+            <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+            <result column="PICTURE_IDS" jdbcType="VARCHAR" property="pictureIds"/>
+            <result column="STATUS" jdbcType="CHAR" property="status"/>
+            <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+            <result column="CONTACT_MAN" jdbcType="VARCHAR" property="contactMan"/>
+            <result column="CONTACT_WAY" jdbcType="VARCHAR" property="contactWay"/>
+            <result column="ACCESS_ENABLE" jdbcType="CHAR" property="accessEnable"/>
+            <result column="SENDABLE" jdbcType="CHAR" property="sendable"/>
+            <result column="LOANABLE" jdbcType="CHAR" property="loanable"/>
+            <result column="TENANTABLE" jdbcType="CHAR" property="tenantable"/>
+            <result column="MARKRTABLE" jdbcType="CHAR" property="markrtable"/>
+            <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="CATEGORY_NAME" jdbcType="VARCHAR" property="categoryName"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_ID, OWNER_ID, ARTICLE_ID, ARTICLE_COUNT, STATUS, CREATE_TIME
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_share_pool
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_share_pool
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.SharePool">
+    insert into t_share_pool (ID, USER_ID, OWNER_ID, 
+      ARTICLE_ID, ARTICLE_COUNT, STATUS, 
+      CREATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, 
+      #{articleId,jdbcType=VARCHAR}, #{articleCount,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.SharePool">
+        insert into t_share_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID,
+            </if>
+            <if test="articleId != null">
+                ARTICLE_ID,
+            </if>
+            <if test="articleCount != null">
+                ARTICLE_COUNT,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerId != null">
+                #{ownerId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleId != null">
+                #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleCount != null">
+                #{articleCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.SharePool">
+        update t_share_pool
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID = #{ownerId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleId != null">
+                ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleCount != null">
+                ARTICLE_COUNT = #{articleCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.SharePool">
+    update t_share_pool
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      OWNER_ID = #{ownerId,jdbcType=VARCHAR},
+      ARTICLE_ID = #{articleId,jdbcType=VARCHAR},
+      ARTICLE_COUNT = #{articleCount,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--在共享池中查找用户是否已有物品ArticleId-->
+    <select id="findByUserAndArticleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_share_pool
+        where USER_ID = #{userId,jdbcType=VARCHAR} AND ARTICLE_ID = #{articleId,jdbcType=VARCHAR} AND STATUS='NORMAL'
+    </select>
+    <!--查找用户的共享池的所有物品-->
+    <select id="listSharePoolByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        t1.* , t2.*
+        FROM t_share_pool t1 JOIN t_article t2 ON t1.ARTICLE_ID = t2.ARTICLE_ID
+        WHERE t1.USER_ID = #{userId,jdbcType=VARCHAR} AND t1.STATUS='NORMAL'
+    </select>
+    <!--查找用户的共享池的数量-->
+    <select id="countSharePoolByUser" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT sum(ARTICLE_COUNT)
+        FROM t_share_pool
+        WHERE USER_ID = #{userId,jdbcType=VARCHAR} AND STATUS='NORMAL'
+    </select>
+    <!--批量更新状态-->
+    <update id="updateSharePoolStatus">
+        UPDATE t_share_pool SET STATUS = 'FINISHED'WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+        AND ARTICLE_ID IN
+        <foreach collection="shareOrderDetailsList" item="item" separator="," open="(" close=")">
+            #{item.articleId}
+        </foreach>
+    </update>
+</mapper>

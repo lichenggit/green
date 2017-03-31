@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.NeedHaveMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.NeedHave">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="NEEDER_ID" jdbcType="VARCHAR" property="neederId" />
+    <result column="NEED_ID" jdbcType="VARCHAR" property="needId" />
+    <result column="NEED_NAME" jdbcType="VARCHAR" property="needName" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+      <result column="PHONE_NUMBER" jdbcType="VARCHAR" property="phoneNumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ID, NEEDER_ID, NEED_ID, NEED_NAME, STATUS, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_need_have
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_need_have
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.NeedHave">
+    insert into t_need_have (ID, USER_ID, NEEDER_ID, 
+      NEED_ID, NEED_NAME, STATUS, 
+      CREATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{neederId,jdbcType=VARCHAR}, 
+      #{needId,jdbcType=VARCHAR}, #{needName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.NeedHave">
+    insert into t_need_have
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="neederId != null">
+        NEEDER_ID,
+      </if>
+      <if test="needId != null">
+        NEED_ID,
+      </if>
+      <if test="needName != null">
+        NEED_NAME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="neederId != null">
+        #{neederId,jdbcType=VARCHAR},
+      </if>
+      <if test="needId != null">
+        #{needId,jdbcType=VARCHAR},
+      </if>
+      <if test="needName != null">
+        #{needName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.NeedHave">
+    update t_need_have
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="neederId != null">
+        NEEDER_ID = #{neederId,jdbcType=VARCHAR},
+      </if>
+      <if test="needId != null">
+        NEED_ID = #{needId,jdbcType=VARCHAR},
+      </if>
+      <if test="needName != null">
+        NEED_NAME = #{needName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.NeedHave">
+    update t_need_have
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      NEEDER_ID = #{neederId,jdbcType=VARCHAR},
+      NEED_ID = #{needId,jdbcType=VARCHAR},
+      NEED_NAME = #{needName,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--查找用户的需求消息-->
+    <select id="selectByNeederId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        t1.*,t2.USERNAME,t2.PHONE_NUMBER
+        from t_need_have t1 join t_user t2
+        on t1.USER_ID = t2.USER_ID
+        where t1.NEEDER_ID = #{neederId,jdbcType=VARCHAR}
+    </select>
+    <select id="matchNeedArticle" resultType="java.util.HashMap">
+        SELECT t4.
+        t_user t4 JOIN
+        (SELECT t1.USER_ID,t1.ARTICLE_NAME NEED_NAME,t2.ARTICLE_ID,t2.ARTICLE_NAME
+        FROM t_need t1 JOIN t_article t2
+        WHERE t1.ARTICLE_NAME LIKE  contact('%',t2.ARTICLE_NAME,'%')
+        OR t2.ARTICLE_NAME LIKE contact('%',t1.ARTICLE_NAME,'%'))t3
+        ON t4.USER_ID = t3.USER_ID
+    </select>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cbbhy.schoolshare.logic.mapping.FeedBackMapper">
+  <resultMap id="BaseResultMap" type="cn.cbbhy.schoolshare.logic.model.FeedBack">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="FEED_BACK_CONTENT" jdbcType="VARCHAR" property="feedBackContent" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="DEALWITH_USER_ID" jdbcType="VARCHAR" property="dealwithUserId" />
+    <result column="DEALWITH_SITUATION" jdbcType="VARCHAR" property="dealwithSituation" />
+    <result column="DEALWITH_TIME" jdbcType="TIMESTAMP" property="dealwithTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ID, FEED_BACK_CONTENT, CREATE_TIME, DEALWITH_USER_ID, DEALWITH_SITUATION, 
+    DEALWITH_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_feed_back
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_feed_back
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cbbhy.schoolshare.logic.model.FeedBack">
+    insert into t_feed_back (ID, USER_ID, FEED_BACK_CONTENT, 
+      CREATE_TIME, DEALWITH_USER_ID, DEALWITH_SITUATION, 
+      DEALWITH_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{feedBackContent,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{dealwithUserId,jdbcType=VARCHAR}, #{dealwithSituation,jdbcType=VARCHAR}, 
+      #{dealwithTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cbbhy.schoolshare.logic.model.FeedBack">
+    insert into t_feed_back
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="feedBackContent != null">
+        FEED_BACK_CONTENT,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="dealwithUserId != null">
+        DEALWITH_USER_ID,
+      </if>
+      <if test="dealwithSituation != null">
+        DEALWITH_SITUATION,
+      </if>
+      <if test="dealwithTime != null">
+        DEALWITH_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedBackContent != null">
+        #{feedBackContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealwithUserId != null">
+        #{dealwithUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealwithSituation != null">
+        #{dealwithSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="dealwithTime != null">
+        #{dealwithTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cbbhy.schoolshare.logic.model.FeedBack">
+    update t_feed_back
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="feedBackContent != null">
+        FEED_BACK_CONTENT = #{feedBackContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealwithUserId != null">
+        DEALWITH_USER_ID = #{dealwithUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealwithSituation != null">
+        DEALWITH_SITUATION = #{dealwithSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="dealwithTime != null">
+        DEALWITH_TIME = #{dealwithTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cbbhy.schoolshare.logic.model.FeedBack">
+    update t_feed_back
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      FEED_BACK_CONTENT = #{feedBackContent,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      DEALWITH_USER_ID = #{dealwithUserId,jdbcType=VARCHAR},
+      DEALWITH_SITUATION = #{dealwithSituation,jdbcType=VARCHAR},
+      DEALWITH_TIME = #{dealwithTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
