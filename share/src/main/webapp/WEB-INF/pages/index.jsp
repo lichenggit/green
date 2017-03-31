@@ -36,25 +36,25 @@
                 <li><a href="javascript:;$.load.a('${basePath}/need/index.html');" >物品申请区</a></li>
                 <li><a href="${basePath}/admin.html?type=sharepools" target="_blank">共享池</a></li>
                 <li><a href="${basePath}/article/addArticle.html" target="_blank">发布</a></li>
-                <%--<shiro:guest>--%>
-                    <%--<li>--%>
-                        <%--<a href="${basePath}/user/login.html" target="_blank"><span--%>
-                                <%--class="glyphicon glyphicon-log-in"></span> 登录</a>--%>
-                    <%--</li>--%>
-                <%--</shiro:guest>--%>
-                <%--<shiro:authenticated>--%>
-                    <%--<li class="dropdown">--%>
-                        <%--<a href="${basePath}/admin.html"  class="dropdown-toggle"--%>
-                           <%--data-toggle="dropdown" data-hover="dropdown">--%>
-                            <%--<shiro:principal/>--%>
-                            <%--<span class="caret"></span></a>--%>
-                        <%--<ul class="dropdown-menu" role="menu">--%>
-                            <%--<li><a href="${basePath}/admin.html" target="_blank">我的管理后台</a></li>--%>
-                            <%--<li class="divider"></li>--%>
-                            <%--<li><a href="${basePath}/user/logout.html">退出</a></li>--%>
-                        <%--</ul>--%>
-                    <%--</li>--%>
-                <%--</shiro:authenticated>--%>
+                <shiro:guest>
+                    <li>
+                        <a href="${basePath}/user/login.html" target="_blank"><span
+                                class="glyphicon glyphicon-log-in"></span> 登录</a>
+                    </li>
+                </shiro:guest>
+                <shiro:authenticated>
+                    <li class="dropdown">
+                        <a href="${basePath}/admin.html"  class="dropdown-toggle"
+                           data-toggle="dropdown" data-hover="dropdown">
+                            <shiro:principal/>
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="${basePath}/admin.html" target="_blank">我的管理后台</a></li>
+                            <li class="divider"></li>
+                            <li><a href="${basePath}/user/logout.html">退出</a></li>
+                        </ul>
+                    </li>
+                </shiro:authenticated>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
